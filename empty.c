@@ -155,6 +155,7 @@ void UART_Read()
 	uint32_t ui32Status;
 	ui32Status = UARTIntStatus(UART5_BASE, true);
 	int i;
+
 	//char BlinkingAt[12] = "Blinking at ";
 	//char hertz[6] = " hertz";
 	UARTIntClear(UART5_BASE, ui32Status);
