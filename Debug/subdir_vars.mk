@@ -12,7 +12,8 @@ CMD_SRCS += \
 ../EK_TM4C123GXL.cmd 
 
 C_SRCS += \
-../empty.c 
+../empty.c \
+../movement.c 
 
 GEN_CMDS += \
 ./configPkg/linker.cmd 
@@ -25,28 +26,33 @@ GEN_MISC_DIRS += \
 ./configPkg/ 
 
 C_DEPS += \
-./empty.d 
+./empty.d \
+./movement.d 
 
 GEN_OPTS += \
 ./configPkg/compiler.opt 
 
 OBJS += \
-./empty.obj 
+./empty.obj \
+./movement.obj 
 
 GEN_MISC_DIRS__QUOTED += \
 "configPkg\" 
 
 OBJS__QUOTED += \
-"empty.obj" 
+"empty.obj" \
+"movement.obj" 
 
 C_DEPS__QUOTED += \
-"empty.d" 
+"empty.d" \
+"movement.d" 
 
 GEN_FILES__QUOTED += \
 "configPkg\linker.cmd" \
 "configPkg\compiler.opt" 
 
 C_SRCS__QUOTED += \
-"../empty.c" 
+"../empty.c" \
+"../movement.c" 
 
 

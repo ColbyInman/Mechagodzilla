@@ -2,7 +2,7 @@
  * empty.h
  *
  *  Created on: Oct 3, 2021
- *      Author: colby
+ *      Author: Mechagodzilla
  */
 
 #ifndef EMPTY_H_
@@ -10,11 +10,11 @@
 
 typedef void (*Actions)(void);
 
-struct UserCommand
+typedef struct UserCommand
 {
    char *Command;
    Actions act;
-};
+}UserCommand_t;
 
 void set(void){}
 void dist(void){}
@@ -25,9 +25,6 @@ void wLED(void);
 void offLED(void);
 void frontDistPrnt(void){}
 void rightDistPrnt(void){}
-void run(void){}
-void reverse(void){}
-void uturn(void){}
-void stop(void){}
+
 
 #endif /* EMPTY_H_ */
