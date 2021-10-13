@@ -14,6 +14,7 @@
 #ifndef MOVEMENT_H
 #define MOVEMENT_H
 
+//movement function definitions
 void setSpeed(int duty);
 void slowSpeed(void);
 void mediumSpeed(void);

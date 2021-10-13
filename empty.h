@@ -16,6 +16,7 @@ typedef struct UserCommand
    Actions act;
 }UserCommand_t;
 
+//basic function definitions
 void set(void){}
 void dist(void){}
 void rLED(void);
