@@ -16,15 +16,15 @@ void setSpeed(int duty){//Sets the speed based on the function sent to it
 
 void slowSpeed(void)
 {//calls setSpeed with a small value
-    setSpeed(25);
+    setSpeed(50);
 }
 void mediumSpeed(void)
 {//calls setSpeed with a medium value
-    setSpeed(50);
+    setSpeed(75);
 }
 void fastSpeed(void)
 {//calls setSpeed with a large value
-    setSpeed(75);
+    setSpeed(100);
 }
 void goForward(void){//Turns on both PWM signals
     PWMOutputState(PWM0_BASE, PWM_OUT_3_BIT, true);
