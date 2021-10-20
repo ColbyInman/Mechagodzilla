@@ -104,6 +104,17 @@ void Board_Init() {
     //Sets PWM state to off by default
     PWMOutputState(PWM0_BASE, PWM_OUT_3_BIT, false);
     PWMOutputState(PWM0_BASE, PWM_OUT_2_BIT, false);
+
+    //*******************Config For ADC*********************************************
+        // Enable ADC0 module
+        SysCtlPeripheralEnable(SYSCTL_PERIPH_ADC0);
+        // configure PE3 (front) and PE2 for input (right)
+        GPIOPinTypeADC(GPIO_PORTE_BASE, GPIO_PIN_3 | GPIO_PIN_2);
+        // Configure sample sequencer
+        ADCSequenceDisable(ADC0_BASE, 3);
+        ADCSequenceConfigure(ADC0_BASE, 3, ADC_TRIGGER_PROCESSOR, 0);
+        ADCSequenceStepConfigure(ADC0_BASE, 3, 0, ADC_CTL_CH0 | ADC_CTL_IE | ADC_CTL_END);
+        ADCSequenceEnable(ADC0_BASE, 3);
 }
 
 // ======== main ========
