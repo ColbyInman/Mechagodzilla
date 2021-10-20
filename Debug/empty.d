@@ -24,6 +24,11 @@ empty.obj: C:/ti/tirtos_tivac_2_16_01_14/products/TivaWare_C_Series-2.1.1.71b/dr
 empty.obj: C:/ti/tirtos_tivac_2_16_01_14/products/TivaWare_C_Series-2.1.1.71b/driverlib/pwm.h
 empty.obj: ../empty.h
 empty.obj: ../movement.h
+empty.obj: ../sensing.h
+empty.obj: C:/ti/tirtos_tivac_2_16_01_14/products/TivaWare_C_Series-2.1.1.71b/driverlib/adc.h
+empty.obj: C:/ti/ccs1040/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/string.h
+empty.obj: C:/ti/ccs1040/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/xlocale/_string.h
+empty.obj: ../controlLED.h
 
 ../empty.c:
 
@@ -72,4 +77,14 @@ C:/ti/tirtos_tivac_2_16_01_14/products/TivaWare_C_Series-2.1.1.71b/driverlib/pwm
 ../empty.h:
 
 ../movement.h:
+
+../sensing.h:
+
+C:/ti/tirtos_tivac_2_16_01_14/products/TivaWare_C_Series-2.1.1.71b/driverlib/adc.h:
+
+C:/ti/ccs1040/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/string.h:
+
+C:/ti/ccs1040/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/xlocale/_string.h:
+
+../controlLED.h:
 

@@ -31,6 +31,8 @@
 
 #include "empty.h"
 #include "movement.h"
+#include "sensing.h"
+#include "controlLED.h"
 
 // Set the baud rate
 #define UART_BAUDRATE 115200
@@ -54,7 +56,7 @@ struct UserCommand arr_cmd[] = {
         {"PX",stop}             //movement.c
 };
 
-uint32_t val_load, pwm_clk;
+uint32_t val_load, pwm_clk, adcVal;
 
 // *** Board Initialization Function ***
 void Board_Init() {
@@ -102,30 +104,6 @@ void Board_Init() {
     //Sets PWM state to off by default
     PWMOutputState(PWM0_BASE, PWM_OUT_3_BIT, false);
     PWMOutputState(PWM0_BASE, PWM_OUT_2_BIT, false);
-}
-
-void rLED(void)
-{//turns on rLED and off the rest of the LEDs
-    GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3, 0x2);
-}
-
-void gLED(void)
-{//turns on gLED and off the rest of the LEDs
-    GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3, 0x8);
-}
-
-void bLED(void)
-{//turns on bLED and off the rest of the LEDs
-    GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3, 0x4);
-}
-void wLED(void)
-{//turns on all the LEDs
-    GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3, 0xE);
-}
-
-void offLED(void)
-{//turns off all of the LEDs
-    GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3, 0x0);
 }
 
 // ======== main ========
