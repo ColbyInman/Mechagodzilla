@@ -110,20 +110,20 @@
 
 /* Content from ti.sysbios.hal (null): */
 
-/* Content from ti.sysbios.family.arm.lm4 (null): */
+/* Content from ti.sysbios.knl (null): */
 
 /* Content from ti.sysbios.family.arm.m3 (ti/sysbios/family/arm/m3/linkcmd.xdt): */
 -u _c_int00
 --retain "*(.resetVecs)"
 ti_sysbios_family_arm_m3_Hwi_nvic = 0xe000e000;
 
-/* Content from ti.sysbios.knl (null): */
-
 /* Content from ti.sysbios.gates (null): */
 
 /* Content from ti.sysbios.xdcruntime (null): */
 
 /* Content from ti.sysbios.heaps (null): */
+
+/* Content from ti.sysbios.family.arm.lm4 (null): */
 
 /* Content from ti.sysbios.utils (null): */
 

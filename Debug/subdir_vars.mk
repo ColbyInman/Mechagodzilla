@@ -13,7 +13,7 @@ CMD_SRCS += \
 
 C_SRCS += \
 ../controlLED.c \
-../empty.c \
+../main.c \
 ../movement.c \
 ../sensing.c 
 
@@ -29,7 +29,7 @@ GEN_MISC_DIRS += \
 
 C_DEPS += \
 ./controlLED.d \
-./empty.d \
+./main.d \
 ./movement.d \
 ./sensing.d 
 
@@ -38,7 +38,7 @@ GEN_OPTS += \
 
 OBJS += \
 ./controlLED.obj \
-./empty.obj \
+./main.obj \
 ./movement.obj \
 ./sensing.obj 
 
@@ -47,13 +47,13 @@ GEN_MISC_DIRS__QUOTED += \
 
 OBJS__QUOTED += \
 "controlLED.obj" \
-"empty.obj" \
+"main.obj" \
 "movement.obj" \
 "sensing.obj" 
 
 C_DEPS__QUOTED += \
 "controlLED.d" \
-"empty.d" \
+"main.d" \
 "movement.d" \
 "sensing.d" 
 
@@ -63,7 +63,7 @@ GEN_FILES__QUOTED += \
 
 C_SRCS__QUOTED += \
 "../controlLED.c" \
-"../empty.c" \
+"../main.c" \
 "../movement.c" \
 "../sensing.c" 
 

@@ -5,8 +5,8 @@
  *      Author: Mechagodzilla
  */
 
-#ifndef EMPTY_H_
-#define EMPTY_H_
+#ifndef MAIN_H_
+#define MAIN_H_
 
 typedef void (*Actions)(void);
 
@@ -19,6 +19,7 @@ typedef struct UserCommand
 //basic function definitions
 void set(void){}
 void dist(void){}
+void InputFunction(void);
+void PID();
 
-
-#endif /* EMPTY_H_ */
+#endif /* MAIN_H_ */

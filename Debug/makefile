@@ -11,7 +11,7 @@ GEN_CMDS__FLAG := -l"configPkg/linker.cmd"
 
 ORDERED_OBJS += \
 "./controlLED.obj" \
-"./empty.obj" \
+"./main.obj" \
 "./movement.obj" \
 "./sensing.obj" \
 "../EK_TM4C123GXL.cmd" \
@@ -160,8 +160,8 @@ Mechagodzilla.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(GEN_FILES__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "controlLED.obj" "empty.obj" "movement.obj" "sensing.obj" 
-	-$(RM) "controlLED.d" "empty.d" "movement.d" "sensing.d" 
+	-$(RM) "controlLED.obj" "main.obj" "movement.obj" "sensing.obj" 
+	-$(RM) "controlLED.d" "main.d" "movement.d" "sensing.d" 
 	-$(RMDIR) $(GEN_MISC_DIRS__QUOTED)
 	-@echo 'Finished clean'
 	-@echo ' '

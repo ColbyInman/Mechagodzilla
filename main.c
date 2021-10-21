@@ -28,14 +28,24 @@
 #include <inc/hw_ints.h>
 #include "driverlib/interrupt.h"
 #include "driverlib/pwm.h"
+#include <driverlib/timer.h>
 
-#include "empty.h"
+
+#include <ti/sysbios/BIOS.h>
+#include <ti/sysbios/knl/Task.h>
+
+#include "main.h"
 #include "movement.h"
 #include "sensing.h"
 #include "controlLED.h"
 
 // Set the baud rate
 #define UART_BAUDRATE 115200
+
+#define PWM_TICKS_IN_PERIOD 3000 // defines full duty cycle period for pwm (set at 3000 to be same scale as ADC)
+#define SETPOINT 2500
+#define P_MULT 0.1
+#define D_MULT 0.05
 
 struct UserCommand arr_cmd[] = {
         {"AX",set},
@@ -106,15 +116,38 @@ void Board_Init() {
     PWMOutputState(PWM0_BASE, PWM_OUT_2_BIT, false);
 
     //*******************Config For ADC*********************************************
-        // Enable ADC0 module
-        SysCtlPeripheralEnable(SYSCTL_PERIPH_ADC0);
-        // configure PE3 (front) and PE2 for input (right)
-        GPIOPinTypeADC(GPIO_PORTE_BASE, GPIO_PIN_3 | GPIO_PIN_2);
-        // Configure sample sequencer
-        ADCSequenceDisable(ADC0_BASE, 3);
-        ADCSequenceConfigure(ADC0_BASE, 3, ADC_TRIGGER_PROCESSOR, 0);
-        ADCSequenceStepConfigure(ADC0_BASE, 3, 0, ADC_CTL_CH0 | ADC_CTL_IE | ADC_CTL_END);
-        ADCSequenceEnable(ADC0_BASE, 3);
+    // Enable ADC0 module
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_ADC0);
+    // configure PE3 (front) and PE2 for input (right)
+    GPIOPinTypeADC(GPIO_PORTE_BASE, GPIO_PIN_3);
+    // Configure sample sequencer
+    ADCSequenceDisable(ADC0_BASE, 3);
+    ADCSequenceConfigure(ADC0_BASE, 3, ADC_TRIGGER_PROCESSOR, 0);
+    ADCSequenceStepConfigure(ADC0_BASE, 3, 0, ADC_CTL_CH0 | ADC_CTL_IE | ADC_CTL_END);
+    ADCSequenceEnable(ADC0_BASE, 3);
+
+    // Enable ADC1 module
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_ADC1);
+    // configure PE3 (front) and PE2 for input (right)
+    GPIOPinTypeADC(GPIO_PORTE_BASE, GPIO_PIN_2);
+    // Configure sample sequencer
+    ADCSequenceDisable(ADC1_BASE, 3);
+    ADCSequenceConfigure(ADC1_BASE, 3, ADC_TRIGGER_PROCESSOR, 0);
+    ADCSequenceStepConfigure(ADC1_BASE, 3, 0, ADC_CTL_CH0 | ADC_CTL_IE | ADC_CTL_END);
+    ADCSequenceEnable(ADC1_BASE, 3);
+
+    //*******************Config For Timer*****************************************
+    //Enable Timer
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER0);
+    TimerConfigure(TIMER0_BASE, TIMER_CFG_PERIODIC);
+    TimerEnable(TIMER0_BASE,TIMER_A);
+    TimerLoadSet(TIMER0_BASE, TIMER_A, SysCtlClockGet()/20);
+   // TimerIntRegister(TIMER0_BASE, TIMER_A, PID);
+    TimerIntClear(TIMER0_BASE,TIMER_TIMA_TIMEOUT);
+    TimerIntEnable(TIMER0_BASE,TIMER_TIMA_TIMEOUT);
+    IntEnable(INT_TIMER0A);
+    TimerEnable(TIMER0_BASE, TIMER_A);
+
 }
 
 // ======== main ========
@@ -124,17 +157,14 @@ int main(void)
 {
     Board_Init();
 
-
-    while(1) {
-
-    }
+    BIOS_start();
+    return(0);
 }
 void UART_Read()
 {
     char tempChar;
     uint32_t ui32Status;
     ui32Status = UARTIntStatus(UART5_BASE, true);
-    int i;
     //char BlinkingAt[12] = "Blinking at ";
     //char hertz[6] = " hertz";
     UARTIntClear(UART5_BASE, ui32Status);
@@ -143,19 +173,56 @@ void UART_Read()
     if (!(tempChar-13))
     {
         //Do the commands
-        for(i = 0; i < sizeof(arr_cmd)/sizeof(UserCommand_t); i++)
-        {
-            if(arr_cmd[i].Command[0] == instructions[0] && arr_cmd[i].Command[1] == instructions[1])
-            {
-                arr_cmd[i].act();
-                break;
-            }
-        }
+        InputFunction();
     }
     else
     {
         instructions[0] = instructions[1];
         instructions[1] = tempChar;
+    }
+}
+bool toggle = false;
+void PID(void)
+{
+    TimerIntClear(TIMER0_BASE,TIMER_TIMA_TIMEOUT);
+//    IRDistanceCollect(2);
+//
+//    convertedADCVal = PWM_TICKS_IN_PERIOD - ui32ADCAvg; // Do this bc PWM goes up, while ADC reads go down (voltage decreases as LED gets brighter)
+//    errorCurr = (SETPOINT - ui32ADCAvg);
+//
+//    P = P_MULT * errorCurr;
+//
+//    diff = errorCurr - errorPrev;
+//    errorPrev = errorCurr;
+//    D = D_MULT * diff;  // Note, not using time as a simplification since it should be consistent
+//
+//    pulseWidth = (uint16_t)(P + D);
+//
+//    PWMPulseWidthSet(PWM0_BASE, PWM_OUT_0, pulseWidth);         // Set duty cycle to pulseWidth/400
+
+
+
+    if (toggle){
+        rLED();
+        toggle = false;
+    }
+    else{
+        toggle = true;
+        offLED();
+    }
+}
+
+void InputFunction(void)
+{
+    int i;
+
+    for(i = 0; i < sizeof(arr_cmd)/sizeof(UserCommand_t); i++)
+    {
+        if(arr_cmd[i].Command[0] == instructions[0] && arr_cmd[i].Command[1] == instructions[1])
+        {
+            arr_cmd[i].act();
+            break;
+        }
     }
 }
 
