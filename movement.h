@@ -11,6 +11,8 @@
 #include <stdbool.h>
 #include "driverlib/pwm.h"
 
+#define SETPOINT 2500
+
 #ifndef MOVEMENT_H
 #define MOVEMENT_H
 
@@ -24,5 +26,6 @@ void turnRight(void);
 void reverse(void);
 void uturn(void);
 void stop(void);
+void CalculateSpeed(uint16_t PID, uint16_t R_Error);
 
 #endif

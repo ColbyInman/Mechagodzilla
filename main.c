@@ -153,6 +153,13 @@ void Board_Init() {
 // ======== main ========
 
 char instructions[2];
+uint16_t pulseWidth = 0;
+uint16_t convertedADCVal;
+int16_t errorCurr;
+int16_t errorPrev = 0;
+float P, I, D;
+int16_t totalSummation = 0;
+int16_t diff;
 int main(void)
 {
     Board_Init();
@@ -184,21 +191,22 @@ void UART_Read()
 bool toggle = false;
 void PID(void)
 {
+    uint32_t CorrectionError;
     TimerIntClear(TIMER0_BASE,TIMER_TIMA_TIMEOUT);
-//    IRDistanceCollect(2);
+    IRDistanceCollect(2);
 //
-//    convertedADCVal = PWM_TICKS_IN_PERIOD - ui32ADCAvg; // Do this bc PWM goes up, while ADC reads go down (voltage decreases as LED gets brighter)
-//    errorCurr = (SETPOINT - ui32ADCAvg);
-//
-//    P = P_MULT * errorCurr;
-//
-//    diff = errorCurr - errorPrev;
-//    errorPrev = errorCurr;
-//    D = D_MULT * diff;  // Note, not using time as a simplification since it should be consistent
-//
-//    pulseWidth = (uint16_t)(P + D);
-//
-//    PWMPulseWidthSet(PWM0_BASE, PWM_OUT_0, pulseWidth);         // Set duty cycle to pulseWidth/400
+    convertedADCVal = PWM_TICKS_IN_PERIOD - ui32ADCAvg; // Do this bc PWM goes up, while ADC reads go down (voltage decreases as LED gets brighter)
+    errorCurr = (SETPOINT - ui32ADCAvg);
+
+    CorrectionError = errorCurr * 100 / convertedADCVal;
+
+    P = P_MULT * errorCurr;
+
+    diff = errorCurr - errorPrev;
+    errorPrev = errorCurr;
+    D = D_MULT * diff;  // Note, not using time as a simplification since it should be consistent
+
+    CalculateSpeed(convertedADCVal, CorrectionError);
 
 
 
