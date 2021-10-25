@@ -23,6 +23,9 @@
 *.elf
 *.bin
 *.gz
+*.map
+*.xml
+*.launch
 ._*
 .DS_Store
 
