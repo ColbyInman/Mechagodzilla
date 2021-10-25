@@ -43,8 +43,6 @@
 // Set the baud rate
 #define UART_BAUDRATE 115200
 
-#define PWM_TICKS_IN_PERIOD 3000 // defines full duty cycle period for pwm (set at 3000 to be same scale as ADC)
-//#define ADC_MAX 4095
 #define SETPOINT 2500
 #define P_MULT 0.1
 #define D_MULT 0.1
@@ -144,7 +142,6 @@ void Board_Init() {
     TimerConfigure(TIMER0_BASE, TIMER_CFG_PERIODIC);
     TimerEnable(TIMER0_BASE,TIMER_A);
     TimerLoadSet(TIMER0_BASE, TIMER_A, SysCtlClockGet()/20);
-   // TimerIntRegister(TIMER0_BASE, TIMER_A, PID);
     TimerIntClear(TIMER0_BASE,TIMER_TIMA_TIMEOUT);
     TimerIntEnable(TIMER0_BASE,TIMER_TIMA_TIMEOUT);
     IntEnable(INT_TIMER0A);
@@ -189,18 +186,14 @@ void UART_Read()
 bool toggle = false;
 void PID(void)
 {
-    //uint16_t pulseWidth = 0;
     double errorCurr;
     double P, D;
     double IRdist;
     double CorrectionError;
     TimerIntClear(TIMER0_BASE,TIMER_TIMA_TIMEOUT);
     IRdist = IRDistanceCollect(3);
-//
-    //convertedADCVal = fabs(PWM_TICKS_IN_PERIOD - IRdist); // Do this bc PWM goes up, while ADC reads go down (voltage decreases as sensor gets closer to the wall)
-    errorCurr = fabs(SETPOINT - IRdist);
 
-    //CorrectionError = errorCurr * 100 / SETPOINT;
+    errorCurr = fabs(SETPOINT - IRdist);
 
     P = P_MULT * errorCurr;
 

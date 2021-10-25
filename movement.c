@@ -47,7 +47,6 @@ void stop(void){//Turns off both PWM signals
 void CalculateSpeed(uint16_t PID, double R_Error) {
 
     if (PID < SETPOINT) { // If far from the wall
-        //int PWMright = val_load - val_load* R_Error/100;
         int PWMleft = val_load;
         int PWMright = val_load - val_load * R_Error/100;
         PWMPulseWidthSet(PWM0_BASE, PWM_OUT_2, PWMright);
@@ -56,7 +55,6 @@ void CalculateSpeed(uint16_t PID, double R_Error) {
     else if (PID > SETPOINT) { // If too close to the wall
         int PWMright = val_load;
         int PWMleft = val_load - val_load * R_Error/100;
-        //int PWMleft = val_load - val_load* R_Error/100;
         PWMPulseWidthSet(PWM0_BASE, PWM_OUT_3, PWMleft);
         PWMPulseWidthSet(PWM0_BASE, PWM_OUT_2, PWMright);
     }

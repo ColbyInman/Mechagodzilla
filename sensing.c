@@ -8,11 +8,11 @@
 
 void frontDistPrnt(void)
 {
-    IRDistanceCollect(3);
+    IRDistanceCollect(2); //Actually broken, idk what it does at all but I wrote it anyways
 }
 void rightDistPrnt(void)
 {
-    IRDistanceCollect(2);
+    IRDistanceCollect(3);
 }
 
 double IRDistanceCollect(int pin)
@@ -28,9 +28,9 @@ double IRDistanceCollect(int pin)
     return adcVal;
     //VoltageRead = adcVal * 3.3 / 4095;
     //double F_Distance = -1.7117*(VoltageRead - 9.1733949)/(VoltageRead + 0.0773);
-    //return -1.7117*(VoltageRead - 9.1733949)/(VoltageRead + 0.0773);
     //IRDistanceDisplay(F_Distance);
 
+    //No longer calculates distance in cm, only as a % of 4095
 }
 
 void IRDistanceDisplay(double distance)
