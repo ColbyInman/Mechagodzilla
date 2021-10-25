@@ -191,12 +191,13 @@ void UART_Read()
 bool toggle = false;
 void PID(void)
 {
+    double IRdist;
     uint32_t CorrectionError;
     TimerIntClear(TIMER0_BASE,TIMER_TIMA_TIMEOUT);
-    IRDistanceCollect(2);
+    IRdist = IRDistanceCollect(2);
 //
-    convertedADCVal = PWM_TICKS_IN_PERIOD - ui32ADCAvg; // Do this bc PWM goes up, while ADC reads go down (voltage decreases as LED gets brighter)
-    errorCurr = (SETPOINT - ui32ADCAvg);
+    convertedADCVal = PWM_TICKS_IN_PERIOD - IRdist; // Do this bc PWM goes up, while ADC reads go down (voltage decreases as LED gets brighter)
+    errorCurr = (SETPOINT - IRdist);
 
     CorrectionError = errorCurr * 100 / convertedADCVal;
 

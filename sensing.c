@@ -15,7 +15,7 @@ void rightDistPrnt(void)
     IRDistanceCollect(2);
 }
 
-void IRDistanceCollect(int pin)
+double IRDistanceCollect(int pin)
 {
     extern uint32_t adcVal;
     double VoltageRead; // to display voltage
@@ -26,8 +26,9 @@ void IRDistanceCollect(int pin)
     // read voltage
     ADCSequenceDataGet(ADC0_BASE, 3, &adcVal);
     VoltageRead = adcVal * 3.3 / 4095;
-    double F_Distance = -1.7117*(VoltageRead - 9.1733949)/(VoltageRead + 0.0773);
-    IRDistanceDisplay(F_Distance);
+    //double F_Distance = -1.7117*(VoltageRead - 9.1733949)/(VoltageRead + 0.0773);
+    return -1.7117*(VoltageRead - 9.1733949)/(VoltageRead + 0.0773);
+    //IRDistanceDisplay(F_Distance);
 
 }
 

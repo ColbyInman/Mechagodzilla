@@ -22,7 +22,7 @@
 
 void frontDistPrnt(void);
 void rightDistPrnt(void);
-void IRDistanceCollect(int pin);
+double IRDistanceCollect(int pin);
 void IRDistanceDisplay(double distance);
 
 
