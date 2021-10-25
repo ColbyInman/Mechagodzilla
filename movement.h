@@ -26,6 +26,6 @@ void turnRight(void);
 void reverse(void);
 void uturn(void);
 void stop(void);
-void CalculateSpeed(uint16_t PID, uint16_t R_Error);
+void CalculateSpeed(uint16_t PID, double R_Error);
 
 #endif

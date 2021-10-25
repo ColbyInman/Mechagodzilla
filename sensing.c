@@ -18,16 +18,17 @@ void rightDistPrnt(void)
 double IRDistanceCollect(int pin)
 {
     extern uint32_t adcVal;
-    double VoltageRead; // to display voltage
+    //double VoltageRead; // to display voltage
     // clear ADC interrupt
     //ADCIntClear(ADC0_BASE, 3);
     // trigger ADC sampling
     ADCProcessorTrigger(ADC0_BASE, pin);
     // read voltage
     ADCSequenceDataGet(ADC0_BASE, pin, &adcVal);
-    VoltageRead = adcVal * 3.3 / 4095;
+    return adcVal;
+    //VoltageRead = adcVal * 3.3 / 4095;
     //double F_Distance = -1.7117*(VoltageRead - 9.1733949)/(VoltageRead + 0.0773);
-    return -1.7117*(VoltageRead - 9.1733949)/(VoltageRead + 0.0773);
+    //return -1.7117*(VoltageRead - 9.1733949)/(VoltageRead + 0.0773);
     //IRDistanceDisplay(F_Distance);
 
 }

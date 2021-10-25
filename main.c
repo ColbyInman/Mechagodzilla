@@ -38,14 +38,16 @@
 #include "movement.h"
 #include "sensing.h"
 #include "controlLED.h"
+#include "math.h"
 
 // Set the baud rate
 #define UART_BAUDRATE 115200
 
 #define PWM_TICKS_IN_PERIOD 3000 // defines full duty cycle period for pwm (set at 3000 to be same scale as ADC)
+//#define ADC_MAX 4095
 #define SETPOINT 2500
 #define P_MULT 0.1
-#define D_MULT 0.05
+#define D_MULT 0.1
 
 struct UserCommand arr_cmd[] = {
         {"AX",set},
@@ -153,13 +155,9 @@ void Board_Init() {
 // ======== main ========
 
 char instructions[2];
-uint16_t pulseWidth = 0;
-uint16_t convertedADCVal;
-int16_t errorCurr;
-int16_t errorPrev = 0;
-float P, I, D;
 int16_t totalSummation = 0;
 int16_t diff;
+double errorPrev = 0;
 int main(void)
 {
     Board_Init();
@@ -191,15 +189,18 @@ void UART_Read()
 bool toggle = false;
 void PID(void)
 {
+    //uint16_t pulseWidth = 0;
+    double errorCurr;
+    double P, D;
     double IRdist;
-    uint32_t CorrectionError;
+    double CorrectionError;
     TimerIntClear(TIMER0_BASE,TIMER_TIMA_TIMEOUT);
-    IRdist = IRDistanceCollect(2);
+    IRdist = IRDistanceCollect(3);
 //
-    convertedADCVal = PWM_TICKS_IN_PERIOD - IRdist; // Do this bc PWM goes up, while ADC reads go down (voltage decreases as sensor gets closer to the wall)
-    errorCurr = (SETPOINT - IRd);
+    //convertedADCVal = fabs(PWM_TICKS_IN_PERIOD - IRdist); // Do this bc PWM goes up, while ADC reads go down (voltage decreases as sensor gets closer to the wall)
+    errorCurr = fabs(SETPOINT - IRdist);
 
-    CorrectionError = errorCurr * 100 / convertedADCVal;
+    //CorrectionError = errorCurr * 100 / SETPOINT;
 
     P = P_MULT * errorCurr;
 
@@ -207,18 +208,18 @@ void PID(void)
     errorPrev = errorCurr;
     D = D_MULT * diff;  // Note, not using time as a simplification since it should be consistent
 
-    CalculateSpeed(convertedADCVal, CorrectionError);
+    CorrectionError = P+D;
 
-
-
-    if (toggle){
+    if (CorrectionError >= 100)
+    {
+        CorrectionError = 99;
         rLED();
-        toggle = false;
     }
-    else{
-        toggle = true;
+    else {
         offLED();
     }
+    CalculateSpeed(IRdist, CorrectionError);
+
 }
 
 void InputFunction(void)
