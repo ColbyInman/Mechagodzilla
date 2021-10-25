@@ -22,9 +22,9 @@ double IRDistanceCollect(int pin)
     // clear ADC interrupt
     //ADCIntClear(ADC0_BASE, 3);
     // trigger ADC sampling
-    ADCProcessorTrigger(ADC0_BASE, 3);
+    ADCProcessorTrigger(ADC0_BASE, pin);
     // read voltage
-    ADCSequenceDataGet(ADC0_BASE, 3, &adcVal);
+    ADCSequenceDataGet(ADC0_BASE, pin, &adcVal);
     VoltageRead = adcVal * 3.3 / 4095;
     //double F_Distance = -1.7117*(VoltageRead - 9.1733949)/(VoltageRead + 0.0773);
     return -1.7117*(VoltageRead - 9.1733949)/(VoltageRead + 0.0773);

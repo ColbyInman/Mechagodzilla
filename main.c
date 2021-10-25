@@ -196,8 +196,8 @@ void PID(void)
     TimerIntClear(TIMER0_BASE,TIMER_TIMA_TIMEOUT);
     IRdist = IRDistanceCollect(2);
 //
-    convertedADCVal = PWM_TICKS_IN_PERIOD - IRdist; // Do this bc PWM goes up, while ADC reads go down (voltage decreases as LED gets brighter)
-    errorCurr = (SETPOINT - IRdist);
+    convertedADCVal = PWM_TICKS_IN_PERIOD - IRdist; // Do this bc PWM goes up, while ADC reads go down (voltage decreases as sensor gets closer to the wall)
+    errorCurr = (SETPOINT - IRd);
 
     CorrectionError = errorCurr * 100 / convertedADCVal;
 
