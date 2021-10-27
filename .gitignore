@@ -21,6 +21,7 @@
 *.symtypes
 *.order
 *.elf
+Debug/
 *.bin
 *.gz
 *.map
