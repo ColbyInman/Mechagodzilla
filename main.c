@@ -47,7 +47,8 @@
 #define P_MULT 0.08
 #define D_MULT 0.05
 
-struct UserCommand arr_cmd[] = {
+struct UserCommand arr_cmd[] =
+{
         {"AX",set},
         {"BX",dist},
         {"CX",rLED},

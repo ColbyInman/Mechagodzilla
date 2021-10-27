@@ -42,7 +42,8 @@ void IRDistanceDisplay(double distance)
     sprintf(DistanceActual,"IR Distance: %lf", distance);
     int len = strlen(DistanceActual);
     int i;
-    for(i=0;i<len;i++){
+    for(i=0;i<len;i++)
+    {
         UARTCharPutNonBlocking(UART5_BASE, DistanceActual[i]);
     }
     UARTCharPutNonBlocking(UART5_BASE, '\r');
