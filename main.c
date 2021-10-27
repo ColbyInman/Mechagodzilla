@@ -44,8 +44,8 @@
 #define UART_BAUDRATE 115200
 
 #define SETPOINT 2500
-#define P_MULT 0.1
-#define D_MULT 0.1
+#define P_MULT 0.08
+#define D_MULT 0.05
 
 struct UserCommand arr_cmd[] = {
         {"AX",set},
@@ -203,9 +203,9 @@ void PID(void)
 
     CorrectionError = P+D;
 
-    if (CorrectionError >= 100)
+    if (CorrectionError > 60)
     {
-        CorrectionError = 99;
+        CorrectionError = 60;
         rLED();
     }
     else {
