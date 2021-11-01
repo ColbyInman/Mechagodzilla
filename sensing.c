@@ -54,12 +54,15 @@ void IRDistanceDisplay(int distance)
 
 void Uturn(void)
 {
-    double frontDist;
+    double frontDist, rightDist;
     frontDist = IRDistanceCollect(ADC1_BASE);
-    while(frontDist > 1000)
+    rightDist = IRDistanceCollect(ADC0_BASE);
+    while(!(frontDist < 900 && rightDist > 1800))
     {
         gLED();
         fastSpeed();
         frontDist = IRDistanceCollect(ADC1_BASE);
+        rightDist = IRDistanceCollect(ADC0_BASE);
     }
+    offLED();
 }
