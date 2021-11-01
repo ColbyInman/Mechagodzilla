@@ -14556,7 +14556,7 @@ __o = __obj[754]  // ti.sysbios.family.arm.m3.Hwi.Instance#0
     __o['eventId'] = -1
     __o['instance'] = __obj[755.0]
     __o['maskSetting'] = String(java.net.URLDecoder.decode('ti.sysbios.interfaces.IHwi.MaskingOption_LOWER', 'UTF-8'))
-    __o['priority'] = 1
+    __o['priority'] = 3
     __o['useDispatcher'] = true
 
 __o = __obj[755]  // ti.sysbios.family.arm.m3.Hwi.Instance#0/instance
@@ -16086,7 +16086,7 @@ __o = __obj[870]  // ti.sysbios.family.arm.m3.Hwi/interrupt/77
     __o['fxn'] = String(java.net.URLDecoder.decode('%26UART_Read', 'UTF-8'))
     __o['hwi'] = undefined
     __o['name'] = String(java.net.URLDecoder.decode('', 'UTF-8'))
-    __o['priority'] = 1
+    __o['priority'] = 3
     __o['useDispatcher'] = false
     __o['used'] = true
 

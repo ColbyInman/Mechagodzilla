@@ -22,8 +22,9 @@
 
 void frontDistPrnt(void);
 void rightDistPrnt(void);
-double IRDistanceCollect(int pin);
-void IRDistanceDisplay(double distance);
+int IRDistanceCollect(int pin);
+void IRDistanceDisplay(int distance);
+void Uturn(void);
 
 
 

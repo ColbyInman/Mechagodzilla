@@ -5,41 +5,43 @@
  *      Author: Mechagodzilla
  */
 #include "sensing.h"
+#include "movement.h"
+#include "controlLED.h"
 
 void frontDistPrnt(void)
 {
-    IRDistanceCollect(2); //Actually broken, idk what it does at all but I wrote it anyways
+    IRDistanceCollect(ADC1_BASE);
 }
 void rightDistPrnt(void)
 {
-    IRDistanceCollect(3);
+    IRDistanceCollect(ADC0_BASE);
 }
 
-double IRDistanceCollect(int pin)
+int IRDistanceCollect(int base)
 {
     extern uint32_t adcVal;
     //double VoltageRead; // to display voltage
     // clear ADC interrupt
     //ADCIntClear(ADC0_BASE, 3);
     // trigger ADC sampling
-    ADCProcessorTrigger(ADC0_BASE, pin);
+    ADCProcessorTrigger(base, 3);
     // read voltage
-    ADCSequenceDataGet(ADC0_BASE, pin, &adcVal);
-    return adcVal;
+    ADCSequenceDataGet(base, 3, &adcVal);
     //VoltageRead = adcVal * 3.3 / 4095;
     //double F_Distance = -1.7117*(VoltageRead - 9.1733949)/(VoltageRead + 0.0773);
-    //IRDistanceDisplay(F_Distance);
+    //IRDistanceDisplay(adcVal);
+    return adcVal;
 
     //No longer calculates distance in cm, only as a % of 4095
 }
 
-void IRDistanceDisplay(double distance)
+void IRDistanceDisplay(int distance)
 {
     uint32_t ui32Status;
     ui32Status = UARTIntStatus(UART5_BASE, true);
     UARTIntClear(UART5_BASE, ui32Status);
     char DistanceActual [25];
-    sprintf(DistanceActual,"IR Distance: %lf", distance);
+    sprintf(DistanceActual,"IR Distance: %d ", distance);
     int len = strlen(DistanceActual);
     int i;
     for(i=0;i<len;i++)
@@ -48,6 +50,16 @@ void IRDistanceDisplay(double distance)
     }
     UARTCharPutNonBlocking(UART5_BASE, '\r');
     UARTCharPutNonBlocking(UART5_BASE, '\n');
+}
 
-
+void Uturn(void)
+{
+    double frontDist;
+    frontDist = IRDistanceCollect(ADC1_BASE);
+    while(frontDist > 1000)
+    {
+        gLED();
+        fastSpeed();
+        frontDist = IRDistanceCollect(ADC1_BASE);
+    }
 }

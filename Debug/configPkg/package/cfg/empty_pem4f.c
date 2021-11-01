@@ -2638,7 +2638,7 @@ ti_sysbios_family_arm_m3_Hwi_Object__ ti_sysbios_family_arm_m3_Hwi_Object__table
         ((xdc_UArg)0),  /* arg */
         ((xdc_Void(*)(xdc_UArg))((xdc_Fxn)UART_Read)),  /* fxn */
         ((xdc_UArg)(0x3)),  /* irp */
-        (xdc_UInt8)0x1,  /* priority */
+        (xdc_UInt8)0x3,  /* priority */
         (xdc_Int16)0x4d,  /* intNum */
         ((void*)0),  /* hookEnv */
     },

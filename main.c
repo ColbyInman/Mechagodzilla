@@ -134,7 +134,7 @@ void Board_Init() {
     // Configure sample sequencer
     ADCSequenceDisable(ADC1_BASE, 3);
     ADCSequenceConfigure(ADC1_BASE, 3, ADC_TRIGGER_PROCESSOR, 0);
-    ADCSequenceStepConfigure(ADC1_BASE, 3, 0, ADC_CTL_CH0 | ADC_CTL_IE | ADC_CTL_END);
+    ADCSequenceStepConfigure(ADC1_BASE, 3, 0, ADC_CTL_CH1 | ADC_CTL_IE | ADC_CTL_END);
     ADCSequenceEnable(ADC1_BASE, 3);
 
     //*******************Config For Timer*****************************************
@@ -189,10 +189,14 @@ void PID(void)
 {
     double errorCurr;
     double P, D;
-    double IRdist;
+    double IRdist, frontDist;
     double CorrectionError;
     TimerIntClear(TIMER0_BASE,TIMER_TIMA_TIMEOUT);
-    IRdist = IRDistanceCollect(3);
+    IRdist = IRDistanceCollect(ADC0_BASE);
+    frontDist = IRDistanceCollect(ADC1_BASE);
+    if (frontDist > 2000){
+        Uturn();
+    }
 
     errorCurr = fabs(SETPOINT - IRdist);
 
@@ -204,9 +208,9 @@ void PID(void)
 
     CorrectionError = P+D;
 
-    if (CorrectionError > 60)
+    if (CorrectionError > 50)
     {
-        CorrectionError = 60;
+        CorrectionError = 50;
         rLED();
     }
     else {
