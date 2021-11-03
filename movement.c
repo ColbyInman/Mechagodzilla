@@ -7,7 +7,35 @@
 
 #include "movement.h"
 
-extern uint32_t val_load;
+int val_load, pwm_clk;
+
+void Movement_Init(void)
+{
+    //Enable for PWM pins
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOB);
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_PWM0);
+
+    //Set PWM for motor control (PB4 is right and PB5 is left)
+    GPIOPinTypePWM(GPIO_PORTB_BASE, GPIO_PIN_5);
+    GPIOPinTypePWM(GPIO_PORTB_BASE, GPIO_PIN_4);
+    GPIOPinConfigure(GPIO_PB5_M0PWM3);
+    GPIOPinConfigure(GPIO_PB4_M0PWM2);
+
+    //Clock divider for PWM
+    pwm_clk = SysCtlClockGet() / 64;
+    val_load = (pwm_clk / 100) - 1;
+
+    //Configures PWM base and generator
+    PWMGenConfigure(PWM0_BASE, PWM_GEN_1, PWM_GEN_MODE_DOWN);
+    PWMGenPeriodSet(PWM0_BASE, PWM_GEN_1, val_load);
+
+    //Enables PWM base and generator
+    PWMGenEnable(PWM0_BASE, PWM_GEN_1);
+
+    //Sets PWM state to off by default
+    PWMOutputState(PWM0_BASE, PWM_OUT_3_BIT, false);
+    PWMOutputState(PWM0_BASE, PWM_OUT_2_BIT, false);
+}
 
 void setSpeed(int duty)
 {//Sets the speed based on the function sent to it

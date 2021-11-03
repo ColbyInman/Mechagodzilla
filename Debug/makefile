@@ -10,10 +10,12 @@ GEN_OPTS__FLAG := --cmd_file="configPkg/compiler.opt"
 GEN_CMDS__FLAG := -l"configPkg/linker.cmd" 
 
 ORDERED_OBJS += \
+"./LightTimer.obj" \
 "./controlLED.obj" \
 "./main.obj" \
 "./movement.obj" \
 "./sensing.obj" \
+"./uartRW.obj" \
 "../EK_TM4C123GXL.cmd" \
 $(GEN_CMDS__FLAG) \
 -l"C:/ti/tirtos_tivac_2_16_01_14/products/TivaWare_C_Series-2.1.1.71b/grlib/ccs/Debug/grlib.lib" \
@@ -160,8 +162,8 @@ Mechagodzilla.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(GEN_FILES__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "controlLED.obj" "main.obj" "movement.obj" "sensing.obj" 
-	-$(RM) "controlLED.d" "main.d" "movement.d" "sensing.d" 
+	-$(RM) "LightTimer.obj" "controlLED.obj" "main.obj" "movement.obj" "sensing.obj" "uartRW.obj" 
+	-$(RM) "LightTimer.d" "controlLED.d" "main.d" "movement.d" "sensing.d" "uartRW.d" 
 	-$(RMDIR) $(GEN_MISC_DIRS__QUOTED)
 	-@echo 'Finished clean'
 	-@echo ' '

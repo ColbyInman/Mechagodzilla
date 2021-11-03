@@ -8,6 +8,30 @@
 #include "movement.h"
 #include "controlLED.h"
 
+void Sensing_Init(void)
+{
+    //*******************Config For ADC*********************************************
+    // Enable ADC0 module
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_ADC0);
+    // configure PE3 (front) and PE2 for input (right)
+    GPIOPinTypeADC(GPIO_PORTE_BASE, GPIO_PIN_3);
+    // Configure sample sequencer
+    ADCSequenceDisable(ADC0_BASE, 3);
+    ADCSequenceConfigure(ADC0_BASE, 3, ADC_TRIGGER_PROCESSOR, 0);
+    ADCSequenceStepConfigure(ADC0_BASE, 3, 0, ADC_CTL_CH0 | ADC_CTL_IE | ADC_CTL_END);
+    ADCSequenceEnable(ADC0_BASE, 3);
+
+    // Enable ADC1 module
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_ADC1);
+    // configure PE3 (front) and PE2 for input (right)
+    GPIOPinTypeADC(GPIO_PORTE_BASE, GPIO_PIN_2);
+    // Configure sample sequencer
+    ADCSequenceDisable(ADC1_BASE, 3);
+    ADCSequenceConfigure(ADC1_BASE, 3, ADC_TRIGGER_PROCESSOR, 0);
+    ADCSequenceStepConfigure(ADC1_BASE, 3, 0, ADC_CTL_CH1 | ADC_CTL_IE | ADC_CTL_END);
+    ADCSequenceEnable(ADC1_BASE, 3);
+}
+
 void frontDistPrnt(void)
 {
     IRDistanceCollect(ADC1_BASE);

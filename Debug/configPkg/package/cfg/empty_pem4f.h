@@ -8,10 +8,13 @@
 #include <xdc/std.h>
 
 #include <ti/sysbios/family/arm/m3/Hwi.h>
-extern const ti_sysbios_family_arm_m3_Hwi_Handle UART_Interrupt;
+extern const ti_sysbios_family_arm_m3_Hwi_Handle uart_Interrupt;
 
 #include <ti/sysbios/family/arm/m3/Hwi.h>
-extern const ti_sysbios_family_arm_m3_Hwi_Handle TimerInterrupt;
+extern const ti_sysbios_family_arm_m3_Hwi_Handle timer_Interrupt;
+
+#include <ti/sysbios/family/arm/m3/Hwi.h>
+extern const ti_sysbios_family_arm_m3_Hwi_Handle LightTimer_Interrupt;
 
 extern int xdc_runtime_Startup__EXECFXN__C;
 

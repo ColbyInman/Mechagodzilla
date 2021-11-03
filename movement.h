@@ -9,6 +9,9 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdbool.h>
+#include <driverlib/sysctl.h>
+#include <driverlib/gpio.h>
+#include <driverlib/pin_map.h>
 #include "driverlib/pwm.h"
 
 #define SETPOINT 2500
@@ -17,6 +20,7 @@
 #define MOVEMENT_H
 
 //movement function definitions
+void Movement_Init(void);
 void setSpeed(int duty);
 void slowSpeed(void);
 void mediumSpeed(void);

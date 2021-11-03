@@ -12,8 +12,10 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdbool.h>
+#include <driverlib/sysctl.h>
 #include <driverlib/gpio.h>
 
+void LED_Init(void);
 
 void rLED(void);
 

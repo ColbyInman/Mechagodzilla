@@ -7,6 +7,14 @@
 
 #include "controlLED.h"
 
+void LED_Init(void)
+{
+    //Enable for LEDs
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOF);
+    //Set LED pins to output
+    GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3);
+}
+
 void rLED(void)
 {//turns on rLED and off the rest of the LEDs
     GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3, 0x2);

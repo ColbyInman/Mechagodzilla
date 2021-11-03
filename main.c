@@ -6,42 +6,9 @@
  *
  */
 
-/* Standard C Libraries */
-#include <stdio.h>
-#include <stdint.h>
-#include <stdbool.h>
-
-/* Constants */
-// This one gives all the GPIO_PORTx_BASE variables and the UARTx_BASE variables
-#include <inc/hw_memmap.h>
-
-/* DriverLib */
-// All the SysCtl Functions
-#include <driverlib/sysctl.h>
-// Adds more constants like GPIO_PA0_U5RX and GPIO_PA0_U5TX for configuring pins
-#include <driverlib/pin_map.h>
-// GPIO Peripheral Driver Library
-#include <driverlib/gpio.h>
-// UART Peripheral Driver Library
-#include <driverlib/uart.h>
-// Hardware interrupt handler Library
-#include <inc/hw_ints.h>
-#include "driverlib/interrupt.h"
-#include "driverlib/pwm.h"
-#include <driverlib/timer.h>
-
-
-#include <ti/sysbios/BIOS.h>
-#include <ti/sysbios/knl/Task.h>
-
 #include "main.h"
-#include "movement.h"
-#include "sensing.h"
-#include "controlLED.h"
-#include "math.h"
 
 // Set the baud rate
-#define UART_BAUDRATE 115200
 
 #define SETPOINT 2500
 #define P_MULT 0.08
@@ -67,75 +34,20 @@ struct UserCommand arr_cmd[] =
         {"PX",stop}             //movement.c
 };
 
-uint32_t val_load, pwm_clk, adcVal;
+uint32_t adcVal;
 
 // *** Board Initialization Function ***
 void Board_Init() {
-    //Enable for LEDs
-    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOF);
-    //Enable for UART pins
-    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOE);
-    //Enable for PWM pins
-    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOB);
-    //Enable for UART controller
-    SysCtlPeripheralEnable(SYSCTL_PERIPH_UART5);
-    //Set LED pins to output
-    GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3);
-    //Set PE4 to RX, PE5 to TX
-    GPIOPinConfigure(GPIO_PE4_U5RX);
-    GPIOPinConfigure(GPIO_PE5_U5TX);
-    GPIOPinTypeUART(GPIO_PORTE_BASE, GPIO_PIN_4 | GPIO_PIN_5);
-
-    //Set PWM for motor control (PB4 is right and PB5 is left)
-    GPIOPinTypePWM(GPIO_PORTB_BASE, GPIO_PIN_5);
-    GPIOPinTypePWM(GPIO_PORTB_BASE, GPIO_PIN_4);
-    GPIOPinConfigure(GPIO_PB5_M0PWM3);
-    GPIOPinConfigure(GPIO_PB4_M0PWM2);
 
     SysCtlClockSet(SYSCTL_SYSDIV_5|SYSCTL_USE_PLL|SYSCTL_XTAL_16MHZ|SYSCTL_OSC_MAIN);
     //SysCtlPWMClockSet(SYSCTL_PWMDIV_64);
-    UARTConfigSetExpClk(UART5_BASE, SysCtlClockGet(), UART_BAUDRATE,(UART_CONFIG_WLEN_8 | UART_CONFIG_STOP_ONE | UART_CONFIG_PAR_NONE));
+    LED_Init();
+    UART_Init();
+    Movement_Init();
+    Sensing_Init();
+    LightTimer_Init();
 
-    UARTEnable(UART5_BASE);
-    UARTIntEnable(UART5_BASE, UART_INT_RX | UART_INT_RT);
-
-    SysCtlPeripheralEnable(SYSCTL_PERIPH_PWM0);
-
-    //Clock divider for PWM
-    pwm_clk = SysCtlClockGet() / 64;
-    val_load = (pwm_clk / 100) - 1;
-
-    //Configures PWM base and generator
-    PWMGenConfigure(PWM0_BASE, PWM_GEN_1, PWM_GEN_MODE_DOWN);
-    PWMGenPeriodSet(PWM0_BASE, PWM_GEN_1, val_load);
-
-    //Enables PWM base and generator
-    PWMGenEnable(PWM0_BASE, PWM_GEN_1);
-
-    //Sets PWM state to off by default
-    PWMOutputState(PWM0_BASE, PWM_OUT_3_BIT, false);
-    PWMOutputState(PWM0_BASE, PWM_OUT_2_BIT, false);
-
-    //*******************Config For ADC*********************************************
-    // Enable ADC0 module
-    SysCtlPeripheralEnable(SYSCTL_PERIPH_ADC0);
-    // configure PE3 (front) and PE2 for input (right)
-    GPIOPinTypeADC(GPIO_PORTE_BASE, GPIO_PIN_3);
-    // Configure sample sequencer
-    ADCSequenceDisable(ADC0_BASE, 3);
-    ADCSequenceConfigure(ADC0_BASE, 3, ADC_TRIGGER_PROCESSOR, 0);
-    ADCSequenceStepConfigure(ADC0_BASE, 3, 0, ADC_CTL_CH0 | ADC_CTL_IE | ADC_CTL_END);
-    ADCSequenceEnable(ADC0_BASE, 3);
-
-    // Enable ADC1 module
-    SysCtlPeripheralEnable(SYSCTL_PERIPH_ADC1);
-    // configure PE3 (front) and PE2 for input (right)
-    GPIOPinTypeADC(GPIO_PORTE_BASE, GPIO_PIN_2);
-    // Configure sample sequencer
-    ADCSequenceDisable(ADC1_BASE, 3);
-    ADCSequenceConfigure(ADC1_BASE, 3, ADC_TRIGGER_PROCESSOR, 0);
-    ADCSequenceStepConfigure(ADC1_BASE, 3, 0, ADC_CTL_CH1 | ADC_CTL_IE | ADC_CTL_END);
-    ADCSequenceEnable(ADC1_BASE, 3);
+    //SysCtlPeripheralEnable(SYSCTL_PERIPH_ADC0);
 
     //*******************Config For Timer*****************************************
     //Enable Timer
@@ -191,7 +103,13 @@ void PID(void)
     double P, D;
     double IRdist, frontDist;
     double CorrectionError;
-    TimerIntClear(TIMER0_BASE,TIMER_TIMA_TIMEOUT);
+    if(GPIOPinRead(GPIO_PORTD_BASE, GPIO_PIN_1))
+    {
+        TimerIntClear(TIMER0_BASE,TIMER_TIMA_TIMEOUT);
+    }
+
+    LightTimerReload();
+
     IRdist = IRDistanceCollect(ADC0_BASE);
     frontDist = IRDistanceCollect(ADC1_BASE);
     if (frontDist > 2000){
@@ -232,5 +150,3 @@ void InputFunction(void)
         }
     }
 }
-
-
