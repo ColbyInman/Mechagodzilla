@@ -75,6 +75,13 @@ int main(void)
     BIOS_start();
     return(0);
 }
+
+void Timeout_50MS() {
+    identify_color();
+    PID();
+}
+
+
 void UART_Read()
 {
     char tempChar;
@@ -95,46 +102,6 @@ void UART_Read()
         instructions[0] = instructions[1];
         instructions[1] = tempChar;
     }
-}
-bool toggle = false;
-void PID(void)
-{
-    double errorCurr;
-    double P, D;
-    double IRdist, frontDist;
-    double CorrectionError;
-    if(GPIOPinRead(GPIO_PORTD_BASE, GPIO_PIN_1))
-    {
-        TimerIntClear(TIMER0_BASE,TIMER_TIMA_TIMEOUT);
-    }
-
-    LightTimerReload();
-
-    IRdist = IRDistanceCollect(ADC0_BASE);
-    frontDist = IRDistanceCollect(ADC1_BASE);
-    if (frontDist > 2000){
-        Uturn();
-    }
-
-    errorCurr = fabs(SETPOINT - IRdist);
-
-    P = P_MULT * errorCurr;
-
-    diff = errorCurr - errorPrev;
-    errorPrev = errorCurr;
-    D = D_MULT * diff;  // Note, not using time as a simplification since it should be consistent
-
-    CorrectionError = P+D;
-
-    if (CorrectionError > 50)
-    {
-        CorrectionError = 50;
-        rLED();
-    }
-    else {
-        offLED();
-    }
-    CalculateSpeed(IRdist, CorrectionError);
 }
 
 void InputFunction(void)

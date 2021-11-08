@@ -10,7 +10,25 @@
 
 #include "LightTimer.h"
 
+uint32_t startTime, endTime, pinValue;
 
+void identify_color(void) {
+   HWREG(TIMER0_BASE + TIMER_O_TAV) = 0;                       // Set Timer2 to 0 to start timing
+   GPIOPinTypeGPIOOutput(GPIO_PORTD_BASE, GPIO_PIN_1);         // Make PortD pin1 output to charge the sensor
+   GPIOPinWrite(GPIO_PORTD_BASE, GPIO_PIN_1, GPIO_PIN_1);      // Start charing the sensor
+   delay((uint32_t)1);                                         // Wait to finish charging
+
+   startTime = TimerValueGet(TIMER0_BASE, TIMER_A);            // Capture startTime
+   GPIOPinTypeGPIOInput(GPIO_PORTD_BASE, GPIO_PIN_1);          // Make PortD pin1 input to time the decaying
+   pinValue = GPIOPinRead(GPIO_PORTD_BASE, GPIO_PIN_1);        // Assign the value when sensor is in fully charged state
+   while (pinValue & GPIO_PIN_1) {                             // Loop to compare to the current state to fully-charged state
+       pinValue = GPIOPinRead(GPIO_PORTD_BASE, GPIO_PIN_1);
+   }
+   endTime = TimerValueGet(TIMER0_BASE, TIMER_A);              // Capture endTime when fully decayed
+   if((endTime - startTime) > 7000){                           // Above black surface if discharge time > 7000 microseconds
+       //Fuction to time black distance
+   }
+}
 
 void LightTimer_Init(void)
 {

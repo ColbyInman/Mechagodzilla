@@ -7,7 +7,15 @@
 #include "sensing.h"
 #include "movement.h"
 #include "controlLED.h"
+#include <driverlib/timer.h>
+#define SETPOINT 2500
+#define P_MULT 0.08
+#define D_MULT 0.05
 
+char instructions[2];
+int16_t totalSummation = 0;
+int16_t diff;
+double errorPrev = 0;
 void Sensing_Init(void)
 {
     //*******************Config For ADC*********************************************
@@ -57,6 +65,46 @@ int IRDistanceCollect(int base)
     return adcVal;
 
     //No longer calculates distance in cm, only as a % of 4095
+}
+
+void PID(void)
+{
+    double errorCurr;
+    double P, D;
+    double IRdist, frontDist;
+    double CorrectionError;
+    if(GPIOPinRead(GPIO_PORTD_BASE, GPIO_PIN_1))
+    {
+        TimerIntClear(TIMER0_BASE,TIMER_TIMA_TIMEOUT);
+    }
+
+    LightTimerReload();
+
+    IRdist = IRDistanceCollect(ADC0_BASE);
+    frontDist = IRDistanceCollect(ADC1_BASE);
+    if (frontDist > 2000){
+        Uturn();
+    }
+
+    errorCurr = fabs(SETPOINT - IRdist);
+
+    P = P_MULT * errorCurr;
+
+    diff = errorCurr - errorPrev;
+    errorPrev = errorCurr;
+    D = D_MULT * diff;  // Note, not using time as a simplification since it should be consistent
+
+    CorrectionError = P+D;
+
+    if (CorrectionError > 50)
+    {
+        CorrectionError = 50;
+        rLED();
+    }
+    else {
+        offLED();
+    }
+    CalculateSpeed(IRdist, CorrectionError);
 }
 
 void IRDistanceDisplay(int distance)

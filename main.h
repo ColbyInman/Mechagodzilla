@@ -56,6 +56,6 @@ typedef struct UserCommand
 void set(void){}
 void dist(void){}
 void InputFunction(void);
-void PID();
+void Timeout_50MS(void);
 
 #endif /* MAIN_H_ */

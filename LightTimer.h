@@ -13,9 +13,11 @@
 #include <stdbool.h>
 #include <driverlib/sysctl.h>
 #include <driverlib/timer.h>
+#include <driverlib/gpio.h>
 
 void LightTimer_Init(void);
 void LightTimerReload(void);
+void identify_color(void);
 
 
 #endif /* LIGHTTIMER_H_ */
