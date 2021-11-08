@@ -18,6 +18,7 @@ char instructions[2];
 //int16_t totalSummation = 0;
 int16_t diff;
 double errorPrev = 0;
+double IRdist;
 void Sensing_Init(void)
 {
     //*******************Config For ADC*********************************************
@@ -73,7 +74,7 @@ void PID(void)
 {
     double errorCurr;
     double P, D;
-    double IRdist, frontDist;
+    double frontDist;
     double CorrectionError;
     if(GPIOPinRead(GPIO_PORTD_BASE, GPIO_PIN_1))
     {
@@ -112,16 +113,16 @@ void IRDistanceDisplay(int distance)
     uint32_t ui32Status;
     ui32Status = UARTIntStatus(UART5_BASE, true);
     UARTIntClear(UART5_BASE, ui32Status);
-    char DistanceActual [25];
-    sprintf(DistanceActual,"IR Distance: %d ", distance);
+    char DistanceActual [36];
+    sprintf(DistanceActual,"Right IR Distance Error: %d\r\n ", distance);
     int len = strlen(DistanceActual);
     int i;
     for(i=0;i<len;i++)
     {
         UARTCharPutNonBlocking(UART5_BASE, DistanceActual[i]);
     }
-    UARTCharPutNonBlocking(UART5_BASE, '\r');
-    UARTCharPutNonBlocking(UART5_BASE, '\n');
+    //UARTCharPutNonBlocking(UART5_BASE, '\r');
+   // UARTCharPutNonBlocking(UART5_BASE, '\n');
 }
 
 void Uturn(void)

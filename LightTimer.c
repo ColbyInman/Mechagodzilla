@@ -9,6 +9,8 @@
 #define ERROR_DIVIDER 10
 
 #include "LightTimer.h"
+#include "sensing.h"
+extern double IRdist;
 
 uint32_t startTime, endTime, pinValue;
 
@@ -57,6 +59,7 @@ void LightTimerReload(void)
     if(TimerValueGet(TIMER1_BASE, TIMER_A) < SysCtlClockGet()/ERROR_DIVIDER)
     {
         //sensing error vals
+        IRDistanceDisplay(IRdist);
     }
     TimerLoadSet(TIMER1_BASE, TIMER_A, SysCtlClockGet()/STOP_DIVIDER);
 }
