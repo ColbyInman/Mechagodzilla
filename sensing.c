@@ -76,10 +76,6 @@ void PID(void)
     double P, D;
     double frontDist;
     double CorrectionError;
-    if(GPIOPinRead(GPIO_PORTD_BASE, GPIO_PIN_1))
-    {
-        TimerIntClear(TIMER0_BASE,TIMER_TIMA_TIMEOUT);
-    }
 
     IRdist = IRDistanceCollect(ADC0_BASE);
     frontDist = IRDistanceCollect(ADC1_BASE);

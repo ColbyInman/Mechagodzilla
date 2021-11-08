@@ -15,6 +15,10 @@ extern double IRdist;
 uint32_t startTime, endTime, pinValue;
 
 void identify_color(void) {
+    while(!SysCtlPeripheralReady(SYSCTL_PERIPH_GPIOD))
+    {
+        SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOD);
+    }
 
    HWREG(TIMER2_BASE + TIMER_O_TAV) = 0;                       // Set Timer2 to 0 to start timing
    GPIOPinTypeGPIOOutput(GPIO_PORTD_BASE, GPIO_PIN_1);         // Make PortD pin1 output to charge the sensor
