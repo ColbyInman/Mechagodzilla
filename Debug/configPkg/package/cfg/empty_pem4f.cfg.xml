@@ -2749,7 +2749,7 @@
         <module name="xdc.cfg.SourceDir"
                 used="true"
                 uses="">
-            <feature name="outputDir" type="string" value="C%3A%5CUsers%5Ctxdbo%5Cgit%5CMechagodzilla/src"/>
+            <feature name="outputDir" type="string" value="C%3A%5CUsers%5Ccolby%5Cgit%5CMechagodzilla/src"/>
             <feature name="toBuildDir" type="string" value=".."/>
             <feature name="makefileName" type="string" value="makefile.libs"/>
             <feature name="verbose" type="number" value="2"/>
@@ -7425,7 +7425,7 @@ examine the Exception view for the ti.sysbios.family.arm.m3.Hwi module using ROV
                 uses="">
         </module>
     </package>
-    <package name="configPkg" version="" repository="C:/Users/txdbo/git/Mechagodzilla/Debug/">
+    <package name="configPkg" version="" repository="C:/Users/colby/git/Mechagodzilla/Debug/">
     </package>
     <package name="xdc.services.io" version="1,0,0,0" repository="C:/ti/xdctools_3_32_00_06_core/packages/">
         <module name="xdc.services.io.File"

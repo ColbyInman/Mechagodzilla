@@ -40,9 +40,8 @@ void identify_color(void) {
 void LightTimer_Init(void)
 {
     //Light sensor configure
-    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOD);
+    //SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOD);
     //Set LED pins to output
-    GPIOPinTypeGPIOInput(GPIO_PORTD_BASE, GPIO_PIN_1);
 
     //Timer Configure
     SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER1);
@@ -56,6 +55,10 @@ void LightTimer_Init(void)
     TimerIntClear(TIMER1_BASE,TIMER_TIMA_TIMEOUT);
     TimerIntEnable(TIMER1_BASE,TIMER_TIMA_TIMEOUT);
    // TimerEnable(TIMER1_BASE, TIMER_A);
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER2);
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER2); // Enable Timer0 Peripheral
+    TimerConfigure(TIMER2_BASE, TIMER_CFG_PERIODIC_UP); // Set Timer0 to periodic
+    TimerEnable(TIMER2_BASE, TIMER_A);                    // Enable Timer0
 }
 
 void LightTimerReload(void)
