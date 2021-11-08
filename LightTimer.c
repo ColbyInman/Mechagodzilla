@@ -15,9 +15,9 @@ extern double IRdist;
 uint32_t startTime, endTime, pinValue;
 
 void identify_color(void) {
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOD);
     while(!SysCtlPeripheralReady(SYSCTL_PERIPH_GPIOD))
     {
-        SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOD);
     }
 
    HWREG(TIMER2_BASE + TIMER_O_TAV) = 0;                       // Set Timer2 to 0 to start timing
@@ -55,7 +55,7 @@ void LightTimer_Init(void)
     TimerLoadSet(TIMER1_BASE, TIMER_A, SysCtlClockGet()/STOP_DIVIDER);
     TimerIntClear(TIMER1_BASE,TIMER_TIMA_TIMEOUT);
     TimerIntEnable(TIMER1_BASE,TIMER_TIMA_TIMEOUT);
-    TimerEnable(TIMER1_BASE, TIMER_A);
+   // TimerEnable(TIMER1_BASE, TIMER_A);
 }
 
 void LightTimerReload(void)

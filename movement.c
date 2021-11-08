@@ -62,6 +62,7 @@ void goForward(void)
 {//Turns on both PWM signals
     PWMOutputState(PWM0_BASE, PWM_OUT_3_BIT, true);
     PWMOutputState(PWM0_BASE, PWM_OUT_2_BIT, true);
+    TimerEnable(TIMER1_BASE, TIMER_A);
 }
 
 void turnRight(void)
@@ -81,6 +82,7 @@ void stop(void)
 {//Turns off both PWM signals
     PWMOutputState(PWM0_BASE, PWM_OUT_3_BIT, false);
     PWMOutputState(PWM0_BASE, PWM_OUT_2_BIT, false);
+    TimerDisable(TIMER1_BASE, TIMER_A);
 }
 
 void CalculateSpeed(uint16_t PID, double R_Error) {

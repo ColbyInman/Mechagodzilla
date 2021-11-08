@@ -13,6 +13,7 @@
 #include <driverlib/gpio.h>
 #include <driverlib/pin_map.h>
 #include "driverlib/pwm.h"
+#include <driverlib/timer.h>
 
 #define SETPOINT 2500
 

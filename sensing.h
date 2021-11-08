@@ -18,6 +18,7 @@
 #include <driverlib/uart.h>
 #include "driverlib/adc.h"
 #include "string.h"
+#include <driverlib/timer.h>
 
 
 
