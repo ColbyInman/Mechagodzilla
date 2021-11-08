@@ -4,8 +4,10 @@
  *  Created on: Oct 19, 2021
  *      Author: Mechagodzilla
  */
+
 #include "sensing.h"
 #include "movement.h"
+#include "LightTimer.h"
 #include "controlLED.h"
 #include <driverlib/timer.h>
 #define SETPOINT 2500
@@ -13,7 +15,7 @@
 #define D_MULT 0.05
 
 char instructions[2];
-int16_t totalSummation = 0;
+//int16_t totalSummation = 0;
 int16_t diff;
 double errorPrev = 0;
 void Sensing_Init(void)
@@ -77,8 +79,6 @@ void PID(void)
     {
         TimerIntClear(TIMER0_BASE,TIMER_TIMA_TIMEOUT);
     }
-
-    LightTimerReload();
 
     IRdist = IRDistanceCollect(ADC0_BASE);
     frontDist = IRDistanceCollect(ADC1_BASE);

@@ -11,7 +11,7 @@ var makeAssembly = false;
 var Executable = xdc.module('xdc.bld.Executable');
 
 var exeOpts = new Executable.Attrs({
-        cfgScript: 'C:/Users/txdbo/git/Mechagodzilla/empty.cfg',
+        cfgScript: 'C:/Users/colby/git/Mechagodzilla/empty.cfg',
         profile: 'release',
         cfgHome: 'xconfig_empty',
 });
@@ -40,8 +40,8 @@ else {
 }
 
 var thisObj = {
-    cfg:        'C:/Users/txdbo/git/Mechagodzilla/empty.cfg',
-    outputPath: 'C:/Users/txdbo/git/Mechagodzilla/.config/xconfig_empty',
+    cfg:        'C:/Users/colby/git/Mechagodzilla/empty.cfg',
+    outputPath: 'C:/Users/colby/git/Mechagodzilla/.config/xconfig_empty',
     exeName:    'empty' + suffix,
     exeIntName: 'empty' + suffix.replace('.', '_'),
     targ:       targ,

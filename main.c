@@ -65,9 +65,7 @@ void Board_Init() {
 // ======== main ========
 
 char instructions[2];
-int16_t totalSummation = 0;
 int16_t diff;
-double errorPrev = 0;
 int main(void)
 {
     Board_Init();
