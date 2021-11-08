@@ -10,7 +10,7 @@
 
 #include "LightTimer.h"
 #include "sensing.h"
-extern double IRdist;
+extern double errorCurr;
 
 uint32_t startTime, endTime, pinValue;
 
@@ -50,7 +50,7 @@ void LightTimer_Init(void)
     {
     }
 
-    TimerConfigure(TIMER1_BASE, TIMER_CFG_ONE_SHOT);
+    TimerConfigure(TIMER1_BASE, TIMER_CFG_PERIODIC);
     TimerLoadSet(TIMER1_BASE, TIMER_A, SysCtlClockGet()/STOP_DIVIDER);
     TimerIntClear(TIMER1_BASE,TIMER_TIMA_TIMEOUT);
     TimerIntEnable(TIMER1_BASE,TIMER_TIMA_TIMEOUT);
@@ -66,7 +66,7 @@ void LightTimerReload(void)
     if(TimerValueGet(TIMER1_BASE, TIMER_A) < SysCtlClockGet()/ERROR_DIVIDER)
     {
         //sensing error vals
-        IRDistanceDisplay(IRdist);
+        IRDistanceDisplay(errorCurr);
     }
     TimerLoadSet(TIMER1_BASE, TIMER_A, SysCtlClockGet()/STOP_DIVIDER);
 }

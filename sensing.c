@@ -18,7 +18,7 @@ char instructions[2];
 //int16_t totalSummation = 0;
 int16_t diff;
 double errorPrev = 0;
-double IRdist;
+double errorCurr;
 void Sensing_Init(void)
 {
     //*******************Config For ADC*********************************************
@@ -72,9 +72,8 @@ int IRDistanceCollect(int base)
 
 void PID(void)
 {
-    double errorCurr;
     double P, D;
-    double frontDist;
+    double IRdist, frontDist;
     double CorrectionError;
 
     IRdist = IRDistanceCollect(ADC0_BASE);
@@ -109,8 +108,8 @@ void IRDistanceDisplay(int distance)
     uint32_t ui32Status;
     ui32Status = UARTIntStatus(UART5_BASE, true);
     UARTIntClear(UART5_BASE, ui32Status);
-    char DistanceActual [36];
-    sprintf(DistanceActual,"Right IR Distance Error: %d\r\n ", distance);
+    char DistanceActual [50];
+    sprintf(DistanceActual,"Right IR Distance Error: %d", distance);
     int len = strlen(DistanceActual);
     int i;
     for(i=0;i<len;i++)
@@ -132,6 +131,7 @@ void Uturn(void)
         fastSpeed();
         frontDist = IRDistanceCollect(ADC1_BASE);
         rightDist = IRDistanceCollect(ADC0_BASE);
+        LightTimerReload();
     }
     offLED();
 }
