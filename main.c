@@ -53,7 +53,6 @@ void Board_Init() {
     //Enable Timer
     SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER0);
     TimerConfigure(TIMER0_BASE, TIMER_CFG_PERIODIC);
-    TimerEnable(TIMER0_BASE,TIMER_A);
     TimerLoadSet(TIMER0_BASE, TIMER_A, SysCtlClockGet()/20);
     TimerIntClear(TIMER0_BASE,TIMER_TIMA_TIMEOUT);
     TimerIntEnable(TIMER0_BASE,TIMER_TIMA_TIMEOUT);

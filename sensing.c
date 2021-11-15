@@ -16,8 +16,18 @@
 char instructions[2];
 //int16_t totalSummation = 0;
 int16_t diff;
-double errorPrev = 0;
-double errorCurr;
+int errorPrev = 0;
+int errorCurr;
+
+char ping[20];
+char pong[20];
+int counter = -1;
+bool firstFlag = false;
+bool pingPong = false;
+bool everyOther = false;
+
+extern bool startCollecting;
+
 void Sensing_Init(void)
 {
     //*******************Config For ADC*********************************************
@@ -65,6 +75,7 @@ int IRDistanceCollect(int base)
     //VoltageRead = adcVal * 3.3 / 4095;
     //double F_Distance = -1.7117*(VoltageRead - 9.1733949)/(VoltageRead + 0.0773);
     //IRDistanceDisplay(adcVal);
+
     return adcVal;
 
     //No longer calculates distance in cm, only as a % of 4095
@@ -72,13 +83,14 @@ int IRDistanceCollect(int base)
 
 void PID(void)
 {
-    double P, D;
-    double IRdist, frontDist;
-    double CorrectionError;
+    int P, D;
+    int IRdist, frontDist;
+    int CorrectionError;
 
     IRdist = IRDistanceCollect(ADC0_BASE);
     frontDist = IRDistanceCollect(ADC1_BASE);
-    if (frontDist > 2000){
+    if (frontDist > 2000)
+    {
         Uturn();
     }
 
@@ -97,29 +109,63 @@ void PID(void)
         CorrectionError = 50;
         rLED();
     }
-    else {
+    else
+    {
         offLED();
     }
     CalculateSpeed(IRdist, CorrectionError);
+
+
+    if(everyOther){
+            counter = (counter >= 19) ? 0 : (counter+1);
+            pingPong = (counter==0) ? (!pingPong) : pingPong;
+            if(pingPong){
+                ping[counter] = fabs(CorrectionError);
+            }
+            else{
+                pong[counter] = fabs(CorrectionError);
+            }
+        //everyOther = (startCollecting)? !everyOther : everyOther;
+        everyOther = !everyOther;
+        if(counter == 19)
+        {
+            IRDistanceDisplay();
+        }
+    }
 }
 
-void IRDistanceDisplay(int distance)
+void IRDistanceDisplay(void)
 {
-    //stuff
-    Semaphore_pend(semDistDisp, BIOS_WAIT_FOREVER);
-    //uint32_t ui32Status;
-    //ui32Status = UARTIntStatus(UART5_BASE, true);
-    //UARTIntClear(UART5_BASE, ui32Status);
-    //char DistanceActual [50];
-    //sprintf(DistanceActual,"Right IR Distance Error: %d", distance);
-    //int len = strlen(DistanceActual);
-    //int i;
-    //for(i=0;i<len;i++)
-    //{
-        //UARTCharPutNonBlocking(UART5_BASE, DistanceActual[i]);
-    //}
-    //UARTCharPutNonBlocking(UART5_BASE, '\r');
-   // UARTCharPutNonBlocking(UART5_BASE, '\n');
+    char header[3] = ":24";
+    char footer[4] = "24\r\n";
+    int i = 0;
+
+    for(i = 0; i < 3; ++i)
+    {
+        UARTCharPut(UART5_BASE, header[i]);
+    }
+
+    if(pingPong)
+    {
+        //write ping(counter)
+        for(i = 0; i < 20; ++i)
+        {
+            UARTCharPut(UART5_BASE, ping[i]);
+        }
+    }
+    else
+    {
+        //write pong(counter)
+        for(i = 0; i < 20; ++i)
+        {
+            UARTCharPut(UART5_BASE, pong[i]);
+        }
+    }
+
+    for (i = 0; i < 4; ++i)
+    {
+    UARTCharPut(UART5_BASE, footer[i]);
+    }
 }
 
 void Uturn(void)

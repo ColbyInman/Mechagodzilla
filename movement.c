@@ -6,8 +6,10 @@
  */
 
 #include "movement.h"
+#include "LightTimer.h"
 
 int val_load, pwm_clk;
+extern bool startCollecting;
 
 void Movement_Init(void)
 {
@@ -83,6 +85,7 @@ void stop(void)
     PWMOutputState(PWM0_BASE, PWM_OUT_3_BIT, false);
     PWMOutputState(PWM0_BASE, PWM_OUT_2_BIT, false);
     TimerDisable(TIMER1_BASE, TIMER_A);
+    startCollecting = 0;
 }
 
 void CalculateSpeed(uint16_t PID, double R_Error) {

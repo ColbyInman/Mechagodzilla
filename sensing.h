@@ -30,7 +30,7 @@ void Sensing_Init(void);
 void frontDistPrnt(void);
 void rightDistPrnt(void);
 int IRDistanceCollect(int pin);
-void IRDistanceDisplay(int distance);
+void IRDistanceDisplay(void);
 void Uturn(void);
 void PID(void);
 

@@ -5,14 +5,15 @@
  *      Author: colby
  */
 
-#define STOP_DIVIDER 5
-#define ERROR_DIVIDER 10
+#define STOP_DIVIDER 8
+#define ERROR_DIVIDER 16
 
 #include "LightTimer.h"
 #include "sensing.h"
 extern double errorCurr;
 
 uint32_t startTime, endTime, pinValue;
+bool startCollecting = 0;
 
 void identify_color(void) {
     SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOD);
@@ -65,8 +66,7 @@ void LightTimerReload(void)
 {
     if(TimerValueGet(TIMER1_BASE, TIMER_A) < SysCtlClockGet()/ERROR_DIVIDER)
     {
-        //sensing error vals
-        IRDistanceDisplay(errorCurr);
+        startCollecting = 1;
     }
     TimerLoadSet(TIMER1_BASE, TIMER_A, SysCtlClockGet()/STOP_DIVIDER);
 }
