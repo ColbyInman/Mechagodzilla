@@ -64,6 +64,7 @@ void Board_Init() {
 // ======== main ========
 
 char instructions[2];
+int countMain = 0;
 int16_t diff;
 int main(void)
 {
@@ -76,6 +77,7 @@ int main(void)
 void Timeout_50MS() {
     identify_color();
     PID();
+    countMain++;
 }
 
 

@@ -18,6 +18,7 @@ char instructions[2];
 int16_t diff;
 int errorPrev = 0;
 int errorCurr;
+int count = 0;
 
 char ping[20];
 char pong[20];
@@ -83,6 +84,7 @@ int IRDistanceCollect(int base)
 
 void PID(void)
 {
+    count++;
     int P, D;
     int IRdist, frontDist;
     int CorrectionError;
@@ -125,13 +127,13 @@ void PID(void)
             else{
                 pong[counter] = fabs(CorrectionError);
             }
-        //everyOther = (startCollecting)? !everyOther : everyOther;
-        everyOther = !everyOther;
         if(counter == 19)
         {
             IRDistanceDisplay();
         }
     }
+    //everyOther = (startCollecting)? !everyOther : everyOther;
+    everyOther = !everyOther;
 }
 
 void IRDistanceDisplay(void)
