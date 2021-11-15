@@ -11,6 +11,7 @@ GEN_CMDS__FLAG := -l"configPkg/linker.cmd"
 
 ORDERED_OBJS += \
 "./LightTimer.obj" \
+"./blasphemy.obj" \
 "./controlLED.obj" \
 "./main.obj" \
 "./movement.obj" \
@@ -162,8 +163,8 @@ Mechagodzilla.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(GEN_FILES__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "LightTimer.obj" "controlLED.obj" "main.obj" "movement.obj" "sensing.obj" "uartRW.obj" 
-	-$(RM) "LightTimer.d" "controlLED.d" "main.d" "movement.d" "sensing.d" "uartRW.d" 
+	-$(RM) "LightTimer.obj" "blasphemy.obj" "controlLED.obj" "main.obj" "movement.obj" "sensing.obj" "uartRW.obj" 
+	-$(RM) "LightTimer.d" "blasphemy.d" "controlLED.d" "main.d" "movement.d" "sensing.d" "uartRW.d" 
 	-$(RMDIR) $(GEN_MISC_DIRS__QUOTED)
 	-@echo 'Finished clean'
 	-@echo ' '

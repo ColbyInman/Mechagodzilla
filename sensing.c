@@ -9,7 +9,6 @@
 #include "movement.h"
 #include "LightTimer.h"
 #include "controlLED.h"
-#include <driverlib/timer.h>
 #define SETPOINT 2500
 #define P_MULT 0.08
 #define D_MULT 0.05
@@ -54,6 +53,7 @@ void rightDistPrnt(void)
 
 int IRDistanceCollect(int base)
 {
+
     extern uint32_t adcVal;
     //double VoltageRead; // to display voltage
     // clear ADC interrupt
@@ -105,17 +105,19 @@ void PID(void)
 
 void IRDistanceDisplay(int distance)
 {
-    uint32_t ui32Status;
-    ui32Status = UARTIntStatus(UART5_BASE, true);
-    UARTIntClear(UART5_BASE, ui32Status);
-    char DistanceActual [50];
-    sprintf(DistanceActual,"Right IR Distance Error: %d", distance);
-    int len = strlen(DistanceActual);
-    int i;
-    for(i=0;i<len;i++)
-    {
-        UARTCharPutNonBlocking(UART5_BASE, DistanceActual[i]);
-    }
+    //stuff
+    Semaphore_pend(semDistDisp, BIOS_WAIT_FOREVER);
+    //uint32_t ui32Status;
+    //ui32Status = UARTIntStatus(UART5_BASE, true);
+    //UARTIntClear(UART5_BASE, ui32Status);
+    //char DistanceActual [50];
+    //sprintf(DistanceActual,"Right IR Distance Error: %d", distance);
+    //int len = strlen(DistanceActual);
+    //int i;
+    //for(i=0;i<len;i++)
+    //{
+        //UARTCharPutNonBlocking(UART5_BASE, DistanceActual[i]);
+    //}
     //UARTCharPutNonBlocking(UART5_BASE, '\r');
    // UARTCharPutNonBlocking(UART5_BASE, '\n');
 }

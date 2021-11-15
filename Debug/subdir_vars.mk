@@ -13,6 +13,7 @@ CMD_SRCS += \
 
 C_SRCS += \
 ../LightTimer.c \
+../blasphemy.c \
 ../controlLED.c \
 ../main.c \
 ../movement.c \
@@ -31,6 +32,7 @@ GEN_MISC_DIRS += \
 
 C_DEPS += \
 ./LightTimer.d \
+./blasphemy.d \
 ./controlLED.d \
 ./main.d \
 ./movement.d \
@@ -42,6 +44,7 @@ GEN_OPTS += \
 
 OBJS += \
 ./LightTimer.obj \
+./blasphemy.obj \
 ./controlLED.obj \
 ./main.obj \
 ./movement.obj \
@@ -53,6 +56,7 @@ GEN_MISC_DIRS__QUOTED += \
 
 OBJS__QUOTED += \
 "LightTimer.obj" \
+"blasphemy.obj" \
 "controlLED.obj" \
 "main.obj" \
 "movement.obj" \
@@ -61,6 +65,7 @@ OBJS__QUOTED += \
 
 C_DEPS__QUOTED += \
 "LightTimer.d" \
+"blasphemy.d" \
 "controlLED.d" \
 "main.d" \
 "movement.d" \
@@ -73,6 +78,7 @@ GEN_FILES__QUOTED += \
 
 C_SRCS__QUOTED += \
 "../LightTimer.c" \
+"../blasphemy.c" \
 "../controlLED.c" \
 "../main.c" \
 "../movement.c" \

@@ -15,6 +15,10 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <driverlib/sysctl.h>
+#include <xdc/runtime/System.h>
+#include <ti/sysbios/BIOS.h>
+#include <ti/sysbios/knl/Task.h>
+#include <ti/sysbios/knl/Semaphore.h>
 #include <driverlib/uart.h>
 #include "driverlib/adc.h"
 #include "string.h"

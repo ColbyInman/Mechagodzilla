@@ -1,7 +1,7 @@
 ******************************************************************************
                   TI ARM Linker PC v20.2.5                     
 ******************************************************************************
->> Linked Mon Nov  8 16:55:15 2021
+>> Linked Wed Nov 10 10:02:41 2021
 
 OUTPUT FILE NAME:   <Mechagodzilla.out>
 ENTRY POINT SYMBOL: "_c_int00"  address: 000051c9
@@ -624,7 +624,7 @@ MODULE SUMMARY
     +--+----------------------------+-------+---------+---------+
        Total:                       2232    64        174    
                                                              
-    C:\Users\txdbo\git\Mechagodzilla\Debug\configPkg\package\cfg\
+    C:\Users\colby\git\Mechagodzilla\Debug\configPkg\package\cfg\
        empty_pem4f.oem4f            1374    7503      4260   
     +--+----------------------------+-------+---------+---------+
        Total:                       1374    7503      4260   
@@ -640,7 +640,7 @@ MODULE SUMMARY
     +--+----------------------------+-------+---------+---------+
        Total:                       1958    364       0      
                                                              
-    C:\Users\txdbo\git\Mechagodzilla\src\sysbios\sysbios.aem4f
+    C:\Users\colby\git\Mechagodzilla\src\sysbios\sysbios.aem4f
        BIOS.obj                     8966    0         0      
        m3_Hwi_asm.obj               314     0         0      
        m3_TaskSupport_asm.obj       180     0         0      
