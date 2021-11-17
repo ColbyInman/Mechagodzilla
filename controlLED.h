@@ -27,4 +27,12 @@ void wLED(void);
 
 void offLED(void);
 
+void dataCollect(void);
+
+void endCollect(void);
+
+void sendData(void);
+
+void endSend(void);
+
 #endif /* CONTROLLED_H_ */

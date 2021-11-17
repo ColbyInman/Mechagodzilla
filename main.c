@@ -13,6 +13,7 @@
 #define SETPOINT 2500
 #define P_MULT 0.08
 #define D_MULT 0.05
+//int a, b;
 
 struct UserCommand arr_cmd[] =
 {
@@ -41,11 +42,11 @@ void Board_Init() {
 
     SysCtlClockSet(SYSCTL_SYSDIV_5|SYSCTL_USE_PLL|SYSCTL_XTAL_16MHZ|SYSCTL_OSC_MAIN);
     //SysCtlPWMClockSet(SYSCTL_PWMDIV_64);
-    LED_Init();
     UART_Init();
     Movement_Init();
     Sensing_Init();
     LightTimer_Init();
+    LED_Init();
 
     //SysCtlPeripheralEnable(SYSCTL_PERIPH_ADC0);
 
@@ -54,10 +55,12 @@ void Board_Init() {
     SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER0);
     TimerConfigure(TIMER0_BASE, TIMER_CFG_PERIODIC);
     TimerLoadSet(TIMER0_BASE, TIMER_A, SysCtlClockGet()/20);
+    //b = TimerLoadGet(TIMER0_BASE, TIMER_A);
     TimerIntClear(TIMER0_BASE,TIMER_TIMA_TIMEOUT);
     TimerIntEnable(TIMER0_BASE,TIMER_TIMA_TIMEOUT);
     IntEnable(INT_TIMER0A);
     TimerEnable(TIMER0_BASE, TIMER_A);
+    //a = SysCtlClockGet();
 
 }
 
@@ -75,8 +78,11 @@ int main(void)
 }
 
 void Timeout_50MS() {
+    TimerIntClear(TIMER0_BASE,TIMER_TIMA_TIMEOUT);
     identify_color();
+    //b = TimerValueGet(TIMER0_BASE, TIMER_A);
     PID();
+    //b = TimerValueGet(TIMER0_BASE, TIMER_A);
     countMain++;
 }
 

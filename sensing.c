@@ -10,7 +10,7 @@
 #include "LightTimer.h"
 #include "controlLED.h"
 #define SETPOINT 2500
-#define P_MULT 0.08
+#define P_MULT 0.1
 #define D_MULT 0.05
 
 char instructions[2];
@@ -117,7 +117,6 @@ void PID(void)
     }
     CalculateSpeed(IRdist, CorrectionError);
 
-
     if(everyOther){
             counter = (counter >= 19) ? 0 : (counter+1);
             pingPong = (counter==0) ? (!pingPong) : pingPong;
@@ -132,8 +131,16 @@ void PID(void)
             IRDistanceDisplay();
         }
     }
-    //everyOther = (startCollecting)? !everyOther : everyOther;
-    everyOther = !everyOther;
+    everyOther = (startCollecting)? !everyOther : false;
+    //everyOther = !everyOther;
+    if(startCollecting)
+    {
+        dataCollect();
+    }
+    else
+    {
+        endCollect();
+    }
 }
 
 void IRDistanceDisplay(void)
@@ -153,7 +160,9 @@ void IRDistanceDisplay(void)
         for(i = 0; i < 20; ++i)
         {
             UARTCharPut(UART5_BASE, ping[i]);
+            sendData();
         }
+        endSend();
     }
     else
     {
@@ -161,12 +170,14 @@ void IRDistanceDisplay(void)
         for(i = 0; i < 20; ++i)
         {
             UARTCharPut(UART5_BASE, pong[i]);
+            sendData();
         }
+        endSend();
     }
 
     for (i = 0; i < 4; ++i)
     {
-    UARTCharPut(UART5_BASE, footer[i]);
+        UARTCharPut(UART5_BASE, footer[i]);
     }
 }
 

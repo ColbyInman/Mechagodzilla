@@ -13,6 +13,7 @@ void LED_Init(void)
     SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOF);
     //Set LED pins to output
     GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3);
+    GPIOPinTypeGPIOOutput(GPIO_PORTB_BASE, GPIO_PIN_6|GPIO_PIN_7);
 }
 
 void rLED(void)
@@ -37,4 +38,24 @@ void wLED(void)
 void offLED(void)
 {//turns off all of the LEDs
     GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3, 0x0);
+}
+
+void dataCollect(void)
+{
+    GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_6, GPIO_PIN_6);
+}
+
+void endCollect(void)
+{
+    GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_6, 0x0);
+}
+
+void sendData(void)
+{
+    GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_7, GPIO_PIN_7);
+}
+
+void endSend(void)
+{
+    GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_7, 0x0);
 }

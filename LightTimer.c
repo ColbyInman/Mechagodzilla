@@ -12,7 +12,7 @@
 #include "sensing.h"
 extern double errorCurr;
 
-uint32_t startTime, endTime, pinValue;
+uint32_t startTime, endTime, totalTime, pinValue;
 bool startCollecting = 0;
 
 void identify_color(void) {
@@ -32,8 +32,9 @@ void identify_color(void) {
    while (pinValue & GPIO_PIN_1) {                             // Loop to compare to the current state to fully-charged state
        pinValue = GPIOPinRead(GPIO_PORTD_BASE, GPIO_PIN_1);
    }
-   endTime = TimerValueGet(TIMER2_BASE, TIMER_A);              // Capture endTime when fully decayed
-   if((endTime - startTime) <= 7000){                           // Above black surface if discharge time > 7000 microseconds
+   endTime = TimerValueGet(TIMER2_BASE, TIMER_A); // Capture endTime when fully decayed
+   totalTime = endTime - startTime;
+   if((totalTime) <= 7000){                           // Above black surface if discharge time > 7000 microseconds
        LightTimerReload();
    }
 }
