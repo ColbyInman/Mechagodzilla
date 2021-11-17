@@ -10,7 +10,7 @@
 #include "LightTimer.h"
 #include "controlLED.h"
 #define SETPOINT 2500
-#define P_MULT 0.1
+#define P_MULT 0.08
 #define D_MULT 0.05
 
 char instructions[2];
@@ -106,9 +106,9 @@ void PID(void)
 
     CorrectionError = P+D;
 
-    if (CorrectionError > 50)
+    if (CorrectionError > 60)
     {
-        CorrectionError = 50;
+        CorrectionError = 60;
         rLED();
     }
     else
@@ -121,10 +121,10 @@ void PID(void)
             counter = (counter >= 19) ? 0 : (counter+1);
             pingPong = (counter==0) ? (!pingPong) : pingPong;
             if(pingPong){
-                ping[counter] = fabs(CorrectionError);
+                ping[counter] = fabs(errorCurr);
             }
             else{
-                pong[counter] = fabs(CorrectionError);
+                pong[counter] = fabs(errorCurr);
             }
         if(counter == 19)
         {
@@ -159,7 +159,7 @@ void IRDistanceDisplay(void)
         //write ping(counter)
         for(i = 0; i < 20; ++i)
         {
-            UARTCharPut(UART5_BASE, ping[i]);
+            UARTCharPutNonBlocking(UART5_BASE, ping[i]);
             sendData();
         }
         endSend();
@@ -169,7 +169,7 @@ void IRDistanceDisplay(void)
         //write pong(counter)
         for(i = 0; i < 20; ++i)
         {
-            UARTCharPut(UART5_BASE, pong[i]);
+            UARTCharPutNonBlocking(UART5_BASE, pong[i]);
             sendData();
         }
         endSend();

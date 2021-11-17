@@ -6,6 +6,7 @@
  */
 
 #include "movement.h"
+#include "controlLED.h"
 #include "LightTimer.h"
 
 int val_load, pwm_clk;

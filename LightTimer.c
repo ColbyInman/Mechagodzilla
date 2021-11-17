@@ -5,8 +5,8 @@
  *      Author: colby
  */
 
-#define STOP_DIVIDER 8
-#define ERROR_DIVIDER 16
+#define STOP_DIVIDER 6
+#define ERROR_DIVIDER 15
 
 #include "LightTimer.h"
 #include "sensing.h"
@@ -34,7 +34,7 @@ void identify_color(void) {
    }
    endTime = TimerValueGet(TIMER2_BASE, TIMER_A); // Capture endTime when fully decayed
    totalTime = endTime - startTime;
-   if((totalTime) <= 7000){                           // Above black surface if discharge time > 7000 microseconds
+   if((totalTime) <= 20000){                           // Above black surface if discharge time > 7000 microseconds
        LightTimerReload();
    }
 }
