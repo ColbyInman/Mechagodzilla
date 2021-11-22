@@ -188,6 +188,9 @@ void Uturn(void)
     rightDist = IRDistanceCollect(ADC0_BASE);
     while(!(frontDist < 900 && rightDist > 1800))
     {
+        if (frontDist < 900) { //Left Turn
+            break;
+        }
         gLED();
         fastSpeed();
         frontDist = IRDistanceCollect(ADC1_BASE);
