@@ -5,6 +5,7 @@
  *      Author: Mechagodzilla
  */
 
+#include "main.h"
 #include "sensing.h"
 #include "movement.h"
 #include "LightTimer.h"
@@ -28,6 +29,7 @@ bool pingPong = false;
 bool everyOther = false;
 
 extern bool startCollecting;
+extern bool uturnFlag;
 
 void Sensing_Init(void)
 {
@@ -51,6 +53,7 @@ void Sensing_Init(void)
     ADCSequenceConfigure(ADC1_BASE, 3, ADC_TRIGGER_PROCESSOR, 0);
     ADCSequenceStepConfigure(ADC1_BASE, 3, 0, ADC_CTL_CH1 | ADC_CTL_IE | ADC_CTL_END);
     ADCSequenceEnable(ADC1_BASE, 3);
+    uturnFlag = false;
 }
 
 void frontDistPrnt(void)
@@ -88,6 +91,7 @@ void PID(void)
     int P, D;
     int IRdist, frontDist;
     int CorrectionError;
+    int temp;
 
     IRdist = IRDistanceCollect(ADC0_BASE);
     frontDist = IRDistanceCollect(ADC1_BASE);
@@ -118,15 +122,19 @@ void PID(void)
     CalculateSpeed(IRdist, CorrectionError);
 
     if(everyOther){
-            counter = (counter >= 19) ? 0 : (counter+1);
+            counter = (counter >= 9) ? 0 : (counter+1);
             pingPong = (counter==0) ? (!pingPong) : pingPong;
             if(pingPong){
-                ping[counter] = fabs(errorCurr);
+                temp = fabs(errorCurr);
+                ping[2*counter] = temp/256;
+                ping[2*counter + 1] = temp%256;
             }
             else{
-                pong[counter] = fabs(errorCurr);
+                temp = fabs(errorCurr);
+                pong[2*counter] = temp/256;
+                pong[2*counter + 1] = temp%256;
             }
-        if(counter == 19)
+        if(counter == 9)
         {
             IRDistanceDisplay();
         }
@@ -149,6 +157,7 @@ void IRDistanceDisplay(void)
     char footer[4] = "24\r\n";
     int i = 0;
 
+    sendData();
     for(i = 0; i < 3; ++i)
     {
         UARTCharPut(UART5_BASE, header[i]);
@@ -159,26 +168,31 @@ void IRDistanceDisplay(void)
         //write ping(counter)
         for(i = 0; i < 20; ++i)
         {
+            if(ping[i] == 0)
+            {
+                ping[i] = " ";
+            }
             UARTCharPutNonBlocking(UART5_BASE, ping[i]);
-            sendData();
         }
-        endSend();
     }
     else
     {
         //write pong(counter)
         for(i = 0; i < 20; ++i)
         {
+            if(pong[i] == 0)
+            {
+                pong[i] = " ";
+            }
             UARTCharPutNonBlocking(UART5_BASE, pong[i]);
-            sendData();
         }
-        endSend();
     }
 
     for (i = 0; i < 4; ++i)
     {
         UARTCharPut(UART5_BASE, footer[i]);
     }
+    //endSend();
 }
 
 void Uturn(void)
@@ -186,13 +200,18 @@ void Uturn(void)
     double frontDist, rightDist;
     frontDist = IRDistanceCollect(ADC1_BASE);
     rightDist = IRDistanceCollect(ADC0_BASE);
-    while(!(frontDist < 900 && rightDist > 1800))
+    if(!(frontDist < 900 && rightDist > 1800))
     {
+        uturnFlag = true;
         gLED();
         fastSpeed();
         frontDist = IRDistanceCollect(ADC1_BASE);
         rightDist = IRDistanceCollect(ADC0_BASE);
         LightTimerReload();
     }
-    offLED();
+    else
+    {
+        uturnFlag = false;
+        offLED();
+    }
 }

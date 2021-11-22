@@ -86,11 +86,13 @@ void uturn(void)
 
 void stop(void)
 {//Turns off both PWM signals
+    TimerIntClear(TIMER1_BASE,TIMER_TIMA_TIMEOUT);
     PWMOutputState(PWM0_BASE, PWM_OUT_3_BIT, false);
     PWMOutputState(PWM0_BASE, PWM_OUT_2_BIT, false);
     TimerDisable(TIMER1_BASE, TIMER_A);
     startCollecting = 0;
-    float completionTime = overallTimer / 20;
+    endCollect();
+    float completionTime = overallTimer / 20.0;
     printTotalTime(completionTime);
 }
 

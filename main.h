@@ -54,8 +54,6 @@ typedef struct UserCommand
 }UserCommand_t;
 
 //basic function definitions
-void set(void){}
-void dist(void){}
 void InputFunction(void);
 void Timeout_50MS(void);
 

@@ -39,7 +39,7 @@ void wLED(void)
 
 void offLED(void)
 {//turns off all of the LEDs
-    GPIOPinWrite(GPIO_PORTD_BASE, GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3, 0x0);
+    GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3, 0x0);
 }
 
 void dataCollect(void)

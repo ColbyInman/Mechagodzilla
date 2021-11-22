@@ -17,8 +17,8 @@
 
 struct UserCommand arr_cmd[] =
 {
-        {"AX",set},
-        {"BX",dist},
+        //{"AX",set},
+        //{"BX",dist},
         {"CX",rLED},
         {"DX",gLED},
         {"EX",bLED},
@@ -31,7 +31,7 @@ struct UserCommand arr_cmd[] =
         {"LX",fastSpeed},       //movement.c
         {"MX",goForward},       //movement.c
         {"NX",turnRight},       //movement.c
-        {"OX",uturn},           //movement.c
+        //{"OX",uturn},           //movement.c
         {"PX",stop}             //movement.c
 };
 
@@ -68,6 +68,7 @@ void Board_Init() {
 
 char instructions[2];
 int overallTimer = 0;
+bool uturnFlag;
 int16_t diff;
 int main(void)
 {
@@ -79,10 +80,17 @@ int main(void)
 
 void Timeout_50MS() {
     TimerIntClear(TIMER0_BASE,TIMER_TIMA_TIMEOUT);
+    if(!uturnFlag)
+    {
     identify_color();
     //b = TimerValueGet(TIMER0_BASE, TIMER_A);
     PID();
     //b = TimerValueGet(TIMER0_BASE, TIMER_A);
+    }
+    else
+    {
+        Uturn();
+    }
     overallTimer++;
 }
 
