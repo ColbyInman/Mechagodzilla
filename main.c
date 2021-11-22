@@ -67,7 +67,7 @@ void Board_Init() {
 // ======== main ========
 
 char instructions[2];
-int countMain = 0;
+int overallTimer = 0;
 int16_t diff;
 int main(void)
 {
@@ -83,7 +83,7 @@ void Timeout_50MS() {
     //b = TimerValueGet(TIMER0_BASE, TIMER_A);
     PID();
     //b = TimerValueGet(TIMER0_BASE, TIMER_A);
-    countMain++;
+    overallTimer++;
 }
 
 

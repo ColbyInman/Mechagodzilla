@@ -14,6 +14,7 @@
 #include <driverlib/pin_map.h>
 #include "driverlib/pwm.h"
 #include <driverlib/timer.h>
+#include <driverlib/uart.h>
 
 #define SETPOINT 2500
 
@@ -32,5 +33,6 @@ void reverse(void);
 void uturn(void);
 void stop(void);
 void CalculateSpeed(uint16_t PID, double R_Error);
+void printTotalTime(float time);
 
 #endif

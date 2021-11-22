@@ -11,6 +11,7 @@
 
 int val_load, pwm_clk;
 extern bool startCollecting;
+extern int overallTimer;
 
 void Movement_Init(void)
 {
@@ -66,6 +67,8 @@ void goForward(void)
     PWMOutputState(PWM0_BASE, PWM_OUT_3_BIT, true);
     PWMOutputState(PWM0_BASE, PWM_OUT_2_BIT, true);
     TimerEnable(TIMER1_BASE, TIMER_A);
+    TimerEnable(TIMER1_BASE, TIMER_B); //Timer for total racetime
+    overallTimer = 0;
 }
 
 void turnRight(void)
@@ -87,6 +90,8 @@ void stop(void)
     PWMOutputState(PWM0_BASE, PWM_OUT_2_BIT, false);
     TimerDisable(TIMER1_BASE, TIMER_A);
     startCollecting = 0;
+    float completionTime = overallTimer / 20;
+    printTotalTime(completionTime);
 }
 
 void CalculateSpeed(uint16_t PID, double R_Error) {
@@ -110,4 +115,14 @@ void CalculateSpeed(uint16_t PID, double R_Error) {
     else {
         fastSpeed();
     }
+}
+
+void printTotalTime(float time) {
+    char timeStr[24];
+    int length = sprintf(timeStr, "Overall Time: %0.2f", time);
+    int i;
+    for(i = 0; i < length; ++i)
+        {
+            UARTCharPut(UART5_BASE, timeStr[i]);
+        }
 }
