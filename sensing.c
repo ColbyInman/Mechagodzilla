@@ -23,6 +23,7 @@ int count = 0;
 
 char ping[20];
 char pong[20];
+char temp[40];
 int counter = -1;
 bool firstFlag = false;
 bool pingPong = false;
@@ -158,6 +159,7 @@ void IRDistanceDisplay(void)
     int i = 0;
 
     sendData();
+    bLED();
     for(i = 0; i < 3; ++i)
     {
         UARTCharPut(UART5_BASE, header[i]);
@@ -168,23 +170,55 @@ void IRDistanceDisplay(void)
         //write ping(counter)
         for(i = 0; i < 20; ++i)
         {
-            if(ping[i] == 0)
+            temp[2*i] = ping[i]/16;
+            temp[2*i+1] = ping[i]%16;
+            if(temp[2*i] < 10)
             {
-                ping[i] = " ";
+                temp[2*i] += 48;
             }
-            UARTCharPutNonBlocking(UART5_BASE, ping[i]);
+            else
+            {
+                temp[2*i] += 55;
+            }
+            if(temp[2*i+1] < 10)
+            {
+                temp[2*i+1] += 48;
+            }
+            else
+            {
+                temp[2*i+1] += 55;
+            }
+            UARTCharPut(UART5_BASE, temp[2*i]);
+            UARTCharPut(UART5_BASE, temp[2*i+1]);
+            //UARTCharPut(UART5_BASE, i+65);
         }
     }
     else
     {
-        //write pong(counter)
         for(i = 0; i < 20; ++i)
         {
-            if(pong[i] == 0)
+            //write pong(counter)
+            temp[2*i] = pong[i]/16;
+            temp[2*i+1] = pong[i]%16;
+            if(temp[2*i] < 10)
             {
-                pong[i] = " ";
+                temp[2*i] += 48;
             }
-            UARTCharPutNonBlocking(UART5_BASE, pong[i]);
+            else
+            {
+                temp[2*i] += 55;
+            }
+            if(temp[2*i+1] < 10)
+            {
+                temp[2*i+1] += 48;
+            }
+            else
+            {
+                temp[2*i+1] += 55;
+            }
+            UARTCharPut(UART5_BASE, temp[2*i]);
+            UARTCharPut(UART5_BASE, temp[2*i+1]);
+            //UARTCharPut(UART5_BASE, i+65);
         }
     }
 
@@ -193,6 +227,7 @@ void IRDistanceDisplay(void)
         UARTCharPut(UART5_BASE, footer[i]);
     }
     //endSend();
+    offLED();
 }
 
 void Uturn(void)
