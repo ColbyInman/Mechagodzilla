@@ -86,8 +86,9 @@ int IRDistanceCollect(int base)
     //No longer calculates distance in cm, only as a % of 4095
 }
 
-void PID(void)
+void PID(UArg arg0, UArg arg1)
 {
+    Semaphore_pend(semaphore0, BIOS_WAIT_FOREVER);
     count++;
     int P, D;
     int IRdist, frontDist;
