@@ -13490,7 +13490,7 @@ __o = __obj[643]  // ti.sysbios.knl.Semaphore.Instance#0
     __o['event'] = null
     __o['eventId'] = 1
     __o['instance'] = __obj[644.0]
-    __o['mode'] = String(java.net.URLDecoder.decode('ti.sysbios.knl.Semaphore.Mode_COUNTING', 'UTF-8'))
+    __o['mode'] = String(java.net.URLDecoder.decode('ti.sysbios.knl.Semaphore.Mode_BINARY', 'UTF-8'))
 
 __o = __obj[644]  // ti.sysbios.knl.Semaphore.Instance#0/instance
     __o['$category'] = String(java.net.URLDecoder.decode('Struct', 'UTF-8'))
@@ -14001,12 +14001,12 @@ __o = __obj[694]  // ti.sysbios.knl.Task.Instance#0
     __o['arg1'] = 0
     __o['env'] = null
     __o['instance'] = __obj[695.0]
-    __o['priority'] = 1
+    __o['priority'] = 2
     __o['stack'] = null
     __o['stackHeap'] = null
     __o['stackSection'] = String(java.net.URLDecoder.decode('.bss%3AtaskStackSection', 'UTF-8'))
-    __o['stackSize'] = 512
-    __o['vitalTaskFlag'] = true
+    __o['stackSize'] = 6000
+    __o['vitalTaskFlag'] = false
 
 __o = __obj[695]  // ti.sysbios.knl.Task.Instance#0/instance
     __o['$category'] = String(java.net.URLDecoder.decode('Struct', 'UTF-8'))

@@ -86,9 +86,8 @@ int IRDistanceCollect(int base)
     //No longer calculates distance in cm, only as a % of 4095
 }
 
-void PID(UArg arg0, UArg arg1)
+void PID(void)
 {
-    Semaphore_pend(semaphore0, BIOS_WAIT_FOREVER);
     count++;
     int P, D;
     int IRdist, frontDist;
@@ -233,21 +232,25 @@ void IRDistanceDisplay(void)
 
 void Uturn(void)
 {
-    double frontDist, rightDist;
-    frontDist = IRDistanceCollect(ADC1_BASE);
-    rightDist = IRDistanceCollect(ADC0_BASE);
-    if(!(frontDist < 900 && rightDist > 1800))
+    while(1)
     {
-        uturnFlag = true;
-        gLED();
-        fastSpeed();
+        double frontDist, rightDist;
         frontDist = IRDistanceCollect(ADC1_BASE);
         rightDist = IRDistanceCollect(ADC0_BASE);
-        LightTimerReload();
-    }
-    else
-    {
-        uturnFlag = false;
-        offLED();
+        if(!(frontDist < 900 && rightDist > 1800))
+        {
+            uturnFlag = true;
+            Semaphore_post(semaphore0);
+            //gLED();
+            fastSpeed();
+            frontDist = IRDistanceCollect(ADC1_BASE);
+            rightDist = IRDistanceCollect(ADC0_BASE);
+            LightTimerReload();
+        }
+        else
+        {
+            uturnFlag = false;
+            offLED();
+        }
     }
 }

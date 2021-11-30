@@ -31,6 +31,7 @@
 #include "driverlib/interrupt.h"
 #include "driverlib/pwm.h"
 #include <driverlib/timer.h>
+#include <xdc/cfg/global.h>
 
 #include "math.h"
 
@@ -44,6 +45,7 @@
 #include "uartRW.h"
 #include "LightTimer.h"
 //#include "WatchdogSensing.h"
+
 
 typedef void (*Actions)(void);
 

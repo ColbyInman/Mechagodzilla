@@ -84,8 +84,7 @@ void Timeout_50MS() {
     {
     identify_color();
     //b = TimerValueGet(TIMER0_BASE, TIMER_A);
-    Semaphore_post(semaphore0);
-    //PID();
+    PID();
     //b = TimerValueGet(TIMER0_BASE, TIMER_A);
     }
     else

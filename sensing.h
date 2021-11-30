@@ -32,7 +32,7 @@ void rightDistPrnt(void);
 int IRDistanceCollect(int pin);
 void IRDistanceDisplay(void);
 void Uturn(void);
-void PID(UArg arg0, UArg arg1);
+void PID(void);
 
 
 

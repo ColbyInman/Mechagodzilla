@@ -15,11 +15,13 @@
 #include <driverlib/sysctl.h>
 #include <driverlib/gpio.h>
 
+#include "main.h"
+
 void LED_Init(void);
 
 void rLED(void);
 
-void gLED(void);
+void gLED(UArg arg0, UArg arg1);
 
 void bLED(void);
 

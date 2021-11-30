@@ -23,9 +23,13 @@ void rLED(void)
     GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3, 0x2);
 }
 
-void gLED(void)
+void gLED(UArg arg0, UArg arg1)
 {//turns on gLED and off the rest of the LEDs
-    GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3, 0x8);
+    while(1)
+    {
+        Semaphore_pend(semaphore0, BIOS_WAIT_FOREVER);
+        GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3, 0x8);
+    }
 }
 
 void bLED(void)
