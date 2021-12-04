@@ -2,7 +2,7 @@
  * LightTimer.h
  *
  *  Created on: Nov 3, 2021
- *      Author: colby
+ *      Author: Mechagodzilla
  */
 
 #ifndef LIGHTTIMER_H_
@@ -21,6 +21,5 @@
 void LightTimer_Init(void);
 void LightTimerReload(void);
 void identify_color(void);
-
 
 #endif /* LIGHTTIMER_H_ */

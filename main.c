@@ -2,7 +2,7 @@
  *  ======= main ========
  *
  *  Created on: Sep 29, 2021
- *  Author:     MechaGodzilla
+ *  Author:     Mechagodzilla
  *
  */
 
@@ -89,7 +89,7 @@ void Timeout_50MS() {
     }
     else
     {
-        Uturn();
+        Semaphore_post(semaphore0);
     }
     overallTimer++;
 }

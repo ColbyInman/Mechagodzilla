@@ -21,7 +21,7 @@ void LED_Init(void);
 
 void rLED(void);
 
-void gLED(UArg arg0, UArg arg1);
+void gLED(void);
 
 void bLED(void);
 

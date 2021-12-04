@@ -2,7 +2,7 @@
  * uartRW.c
  *
  *  Created on: Nov 3, 2021
- *      Author: colby
+ *      Author: Mechagodzilla
  */
 #include "uartRW.h"
 

@@ -8,8 +8,6 @@
 #ifndef SENSING_H_
 #define SENSING_H_
 
-
-
 #include <inc/hw_memmap.h>
 #include <stdio.h>
 #include <stdint.h>
@@ -24,16 +22,12 @@
 #include "string.h"
 #include <driverlib/timer.h>
 
-
-
 void Sensing_Init(void);
 void frontDistPrnt(void);
 void rightDistPrnt(void);
 int IRDistanceCollect(int pin);
 void IRDistanceDisplay(void);
-void Uturn(void);
+void Uturn(UArg arg0, UArg arg1);
 void PID(void);
-
-
 
 #endif /* SENSING_H_ */

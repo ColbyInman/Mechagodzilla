@@ -2,7 +2,7 @@
  * uartRW.h
  *
  *  Created on: Nov 3, 2021
- *      Author: colby
+ *      Author: Mechagodzilla
  */
 
 #ifndef UARTRW_H_

@@ -2,7 +2,7 @@
  * LightTimer.c
  *
  *  Created on: Nov 3, 2021
- *      Author: colby
+ *      Author: Mechagodzilla
  */
 
 #define STOP_DIVIDER 6
@@ -21,20 +21,20 @@ void identify_color(void) {
     {
     }
 
-   HWREG(TIMER2_BASE + TIMER_O_TAV) = 0;                       // Set Timer2 to 0 to start timing
-   GPIOPinTypeGPIOOutput(GPIO_PORTD_BASE, GPIO_PIN_1);         // Make PortD pin1 output to charge the sensor
-   GPIOPinWrite(GPIO_PORTD_BASE, GPIO_PIN_1, GPIO_PIN_1);      // Start charing the sensor
-   SysCtlDelay(SysCtlClockGet()/83333);// Wait to finish charging
+   HWREG(TIMER2_BASE + TIMER_O_TAV) = 0; // Set Timer2 to 0 to start timing
+   GPIOPinTypeGPIOOutput(GPIO_PORTD_BASE, GPIO_PIN_1); // Make PortD pin1 output to charge the sensor
+   GPIOPinWrite(GPIO_PORTD_BASE, GPIO_PIN_1, GPIO_PIN_1); // Start charing the sensor
+   SysCtlDelay(SysCtlClockGet()/83333); // Wait to finish charging
 
-   startTime = TimerValueGet(TIMER2_BASE, TIMER_A);            // Capture startTime
-   GPIOPinTypeGPIOInput(GPIO_PORTD_BASE, GPIO_PIN_1);          // Make PortD pin1 input to time the decaying
-   pinValue = GPIOPinRead(GPIO_PORTD_BASE, GPIO_PIN_1);        // Assign the value when sensor is in fully charged state
-   while (pinValue & GPIO_PIN_1) {                             // Loop to compare to the current state to fully-charged state
+   startTime = TimerValueGet(TIMER2_BASE, TIMER_A); // Capture startTime
+   GPIOPinTypeGPIOInput(GPIO_PORTD_BASE, GPIO_PIN_1); // Make PortD pin1 input to time the decaying
+   pinValue = GPIOPinRead(GPIO_PORTD_BASE, GPIO_PIN_1); // Assign the value when sensor is in fully charged state
+   while (pinValue & GPIO_PIN_1) { // Loop to compare to the current state to fully-charged state
        pinValue = GPIOPinRead(GPIO_PORTD_BASE, GPIO_PIN_1);
    }
    endTime = TimerValueGet(TIMER2_BASE, TIMER_A); // Capture endTime when fully decayed
    totalTime = endTime - startTime;
-   if((totalTime) <= 20000){                           // Above black surface if discharge time > 7000 microseconds
+   if((totalTime) <= 20000){ // Above black surface if discharge time > 20000 microseconds
        LightTimerReload();
    }
 }
@@ -59,14 +59,14 @@ void LightTimer_Init(void)
    // TimerEnable(TIMER1_BASE, TIMER_A);
     SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER2); // Enable Timer0 Peripheral
     TimerConfigure(TIMER2_BASE, TIMER_CFG_PERIODIC_UP); // Set Timer0 to periodic
-    TimerEnable(TIMER2_BASE, TIMER_A);                    // Enable Timer0
+    TimerEnable(TIMER2_BASE, TIMER_A); // Enable Timer0
 }
 
 void LightTimerReload(void)
 {
     if(TimerValueGet(TIMER1_BASE, TIMER_A) < SysCtlClockGet()/ERROR_DIVIDER)
     {
-        startCollecting = 1;
+        startCollecting = !startCollecting;
     }
     TimerLoadSet(TIMER1_BASE, TIMER_A, SysCtlClockGet()/STOP_DIVIDER);
 }

@@ -98,7 +98,7 @@ void PID(void)
     frontDist = IRDistanceCollect(ADC1_BASE);
     if (frontDist > 2000)
     {
-        Uturn();
+        Semaphore_post(semaphore0);
     }
 
     errorCurr = fabs(SETPOINT - IRdist);
@@ -230,18 +230,18 @@ void IRDistanceDisplay(void)
     offLED();
 }
 
-void Uturn(void)
+void Uturn(UArg arg0, UArg arg1)
 {
     while(1)
     {
+        Semaphore_pend(semaphore0, BIOS_WAIT_FOREVER);
         double frontDist, rightDist;
         frontDist = IRDistanceCollect(ADC1_BASE);
         rightDist = IRDistanceCollect(ADC0_BASE);
         if(!(frontDist < 900 && rightDist > 1800))
         {
             uturnFlag = true;
-            Semaphore_post(semaphore0);
-            //gLED();
+            gLED();
             fastSpeed();
             frontDist = IRDistanceCollect(ADC1_BASE);
             rightDist = IRDistanceCollect(ADC0_BASE);
